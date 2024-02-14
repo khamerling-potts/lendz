@@ -1,6 +1,7 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import validates
 
 
 from config import db, bcrypt
@@ -29,6 +30,14 @@ class User(db.Model, SerializerMixin):
 
     def authenticate(self, password):
         return bcrypt.check_password_hash(self._password_hash, password.encode("utf-8"))
+
+    @validates("username")
+    def validate_username(self, key, username):
+        if username == "":
+            raise ValueError("username must not be empty")
+        if db.session.query(User.id).filter_by(username=username).first():
+            raise ValueError("username must be unique")
+        return username
 
     def __repr__(self):
         return f"User {self.username}, ID {self.id}"
