@@ -1,0 +1,8 @@
+#logout {
+  float: right;
+}
+
+#invalidLogin {
+  color: red;
+  display: block;
+}

@@ -41,6 +41,35 @@ class Signup(Resource):
             return {"error": "422 - Unprocessable Entity"}, 422
 
 
+class CheckSession(Resource):
+    def get(self):
+        user_id = session.get("user_id")
+        if user_id:
+            user = User.query.filter_by(id=user_id).first()
+            return user.to_dict(), 200
+        else:
+            return {}, 401
+
+
+class Login(Resource):
+    def post(self):
+        data = request.get_json()
+        [username, password] = [data["username"], data["password"]]
+        user = User.query.filter_by(username=username).first()
+        if user and user.authenticate(password):
+            session["user_id"] = user.id
+            return user.to_dict(), 200
+        return {"error": "401 - Unauthorized"}, 401
+
+
+class Logout(Resource):
+    def delete(self):
+        if session.get("user_id"):
+            session["user_id"] = None
+            return {}, 204
+        return {"error": "401 - Unauthorized"}, 401
+
+
 @app.route("/")
 @app.route("/<int:id>")
 def index():
@@ -49,6 +78,9 @@ def index():
 
 api.add_resource(Signup, "/signup", endpoint="signup")
 api.add_resource(ResetDB, "/reset", endpoint="reset")
+api.add_resource(CheckSession, "/check_session", endpoint="check_session")
+api.add_resource(Login, "/login", endpoint="login")
+api.add_resource(Logout, "/logout", endpoint="logout")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

@@ -1,7 +1,8 @@
-import App from "./components/App";
+import App from "./App";
 import Home from "./pages/Home";
 import YourClaims from "./pages/YourClaims";
 import YourListings from "./pages/YourListings";
+import Login from "./pages/Login";
 
 const routes = [
   {
