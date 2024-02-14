@@ -35,11 +35,7 @@ class Signup(Resource):
             print(new_user)
             db.session.add(new_user)
             db.session.commit()
-            print("successfully committed")
-            print(new_user.id)
-            print(session)
             session["user_id"] = new_user.id
-            print("successfully set session user id")
             return new_user.to_dict(), 201
         except Exception as exc:
             return {"error": "422 - Unprocessable Entity"}, 422
