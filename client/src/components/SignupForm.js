@@ -4,8 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 function SignupForm({ user, setUser }) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [usernameTaken, setUsernameTaken] = useState(false);
 
   //   function handleSubmit(e) {
   //     e.preventDefault();
@@ -28,7 +27,23 @@ function SignupForm({ user, setUser }) {
   //     });
   //   }
 
-  function handleChange(e) {}
+  function handleChange(e) {
+    formik.handleChange(e);
+    const configObj = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username: e.target.value }),
+    };
+    fetch("/check_username", configObj).then((r) => {
+      if (r.ok) {
+        r.json().then((data) => setUsernameTaken(false));
+      } else {
+        r.json().then((err) => setUsernameTaken(true));
+      }
+    });
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -70,6 +85,12 @@ function SignupForm({ user, setUser }) {
         ></input>
         {formik.touched.username && formik.errors.username ? (
           <div>{formik.errors.username}</div>
+        ) : null}
+        {usernameTaken && formik.values.username != "" ? (
+          <div id="usernameTaken">Username taken ✕</div>
+        ) : null}
+        {!usernameTaken && formik.values.username != "" ? (
+          <div id="usernameAvailable">Username available ✔</div>
         ) : null}
         <input
           type="text"

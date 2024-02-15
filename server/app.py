@@ -28,7 +28,7 @@ class Signup(Resource):
     def post(self):
         data = request.get_json()
         print(data)
-        [username, password] = [data["username"], data["password"]]
+        [username, password] = [data.get("username"), data.get("password")]
         new_user = User(username=username, rating=None)
         new_user.password_hash = password
         try:
@@ -54,7 +54,7 @@ class CheckSession(Resource):
 class Login(Resource):
     def post(self):
         data = request.get_json()
-        [username, password] = [data["username"], data["password"]]
+        [username, password] = [data.get("username"), data.get("password")]
         user = User.query.filter_by(username=username).first()
         if user and user.authenticate(password):
             session["user_id"] = user.id
@@ -70,6 +70,16 @@ class Logout(Resource):
         return {"error": "401 - Unauthorized"}, 401
 
 
+class CheckUsername(Resource):
+    def post(self):
+        data = request.get_json()
+        username = data.get("username")
+        user = User.query.filter_by(username=username).first()
+        if user:
+            return {"error": "409 - Conflict"}, 409
+        return {}, 200
+
+
 @app.route("/")
 @app.route("/<int:id>")
 def index():
@@ -81,6 +91,7 @@ api.add_resource(ResetDB, "/reset", endpoint="reset")
 api.add_resource(CheckSession, "/check_session", endpoint="check_session")
 api.add_resource(Login, "/login", endpoint="login")
 api.add_resource(Logout, "/logout", endpoint="logout")
+api.add_resource(CheckUsername, "/check_username", endpoint="check_username")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
