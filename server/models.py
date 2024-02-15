@@ -16,7 +16,9 @@ class User(db.Model, SerializerMixin):
     rating = db.Column(db.Float, db.CheckConstraint("1 <= rating <= 5"), nullable=True)
     _password_hash = db.Column(db.String)
 
-    # add relationships after making other models
+    owned_listings = db.relationship(
+        "Listing", back_populates="user", cascade="all, delete-orphan"
+    )
 
     # what is this?
     @hybrid_property
@@ -42,3 +44,40 @@ class User(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f"User {self.username}, ID {self.id}"
+
+
+class Listing(db.Model, SerializerMixin):
+    __tablename__ = "listings"
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String, nullable=False)
+    img_url = db.Column(db.String, nullable=False)
+    description = db.Column(db.String, nullable=False)
+    zip = db.Column(db.Integer, nullable=False)
+    meeting_place = db.Column(db.String, nullable=False)
+
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user = db.relationship("User", back_populates="owned_listings")
+
+    @validates("title")
+    def validate_title(self, key, title):
+        if title == "":
+            raise ValueError("title must not be empty")
+        if len(title) > 50:
+            raise ValueError("Title must be less than 50 characters")
+
+    @validates("description")
+    def validates_description(self, key, description):
+        if description == "":
+            raise ValueError("description must not be empty")
+        if len(description) > 100:
+            raise ValueError("description must be less than 100 chars")
+
+    @validates("zip")
+    def validates_zip(self, key, zip):
+        if zip.isDigit() and len(zip) == 5:
+            return zip  # add number conversion?
+        raise ValueError("zip code must be a 5 digit number")
+
+    def __repr__(self):
+        return f"Listing {self.title}, ID {self.id}"
