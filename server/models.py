@@ -11,6 +11,8 @@ from config import db, bcrypt
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
+    serialize_rules = ("-owned_listings.user", "-_password_hash")
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
     rating = db.Column(db.Float, db.CheckConstraint("1 <= rating <= 5"), nullable=True)

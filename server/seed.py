@@ -50,6 +50,24 @@ if __name__ == "__main__":
                 user=user2,
                 user_id=user2.id,
             ),
+            Listing(
+                title="Lawn Mowing Service",
+                img_url="https://res.cloudinary.com/taskrabbit-com/image/upload/f_auto,q_auto/bvnlcg3sr9wdtoikd1im",
+                description="My son is home this weekend and is offering to mow a neighbor's lawn for free!",
+                zip=40015,
+                meeting_place="TBD",
+                user=user2,
+                user_id=user2.id,
+            ),
+            Listing(
+                title="Assorted Women's Clothes",
+                img_url="https://weedman.com/images/no-available-image.jpg",
+                description="I have a bunch of women's clothes ranging from XS-L. Please take all.",
+                zip=38562,
+                meeting_place="1st and Washington Ave",
+                user=user1,
+                user_id=user1.id,
+            ),
         ]
 
         db.session.add_all(listings)
