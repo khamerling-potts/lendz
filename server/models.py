@@ -38,9 +38,9 @@ class User(db.Model, SerializerMixin):
     def validate_username(self, key, username):
         if username == "":
             raise ValueError("username must not be empty")
-        if db.session.query(User.id).filter_by(username=username).first():
+        if db.session.query(User.id).filter_by(username=username.lower()).first():
             raise ValueError("username must be unique")
-        return username
+        return username.lower()
 
     def __repr__(self):
         return f"User {self.username}, ID {self.id}"
@@ -65,6 +65,7 @@ class Listing(db.Model, SerializerMixin):
             raise ValueError("title must not be empty")
         if len(title) > 50:
             raise ValueError("Title must be less than 50 characters")
+        return title
 
     @validates("description")
     def validates_description(self, key, description):
@@ -72,11 +73,15 @@ class Listing(db.Model, SerializerMixin):
             raise ValueError("description must not be empty")
         if len(description) > 100:
             raise ValueError("description must be less than 100 chars")
+        return description
 
+    # Validate zip when it comes in as an int or str (seed data vs json from front end)
     @validates("zip")
     def validates_zip(self, key, zip):
+        if isinstance(zip, int) and 10000 <= zip <= 99999:
+            return zip
         if zip.isDigit() and len(zip) == 5:
-            return zip  # add number conversion?
+            return int(zip)  # add number conversion?
         raise ValueError("zip code must be a 5 digit number")
 
     def __repr__(self):

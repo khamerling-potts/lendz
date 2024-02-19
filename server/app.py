@@ -10,7 +10,7 @@ from flask_restful import Resource
 from config import app, db, api
 
 # Add your model imports
-from models import User
+from models import User, Listing
 
 
 # Views go here!
@@ -22,6 +22,13 @@ class ResetDB(Resource):
         User.query.delete()
         db.session.commit()
         return {"message": "200 - Successfully cleared User database"}, 200
+
+
+# Authorize user before any requests to browse listings,
+@app.before_request
+def check_logged_in():
+    if request.endpoint in ["browse_listings"] and not session.get("user_id"):
+        return {"error": "401 - Unauthorized"}, 401
 
 
 class Signup(Resource):
@@ -43,19 +50,20 @@ class Signup(Resource):
 
 class CheckSession(Resource):
     def get(self):
-        user_id = session.get("user_id")
-        if user_id:
-            user = User.query.filter_by(id=user_id).first()
-            return user.to_dict(), 200
-        else:
-            return {}, 401
+        if request.endpoint != "reset" and request.endpoint != "signup":
+            user_id = session.get("user_id")
+            if user_id:
+                user = User.query.filter_by(id=user_id).first()
+                return user.to_dict(), 200
+            else:
+                return {}, 401
 
 
 class Login(Resource):
     def post(self):
         data = request.get_json()
         [username, password] = [data.get("username"), data.get("password")]
-        user = User.query.filter_by(username=username).first()
+        user = User.query.filter_by(username=username.lower()).first()
         if user and user.authenticate(password):
             session["user_id"] = user.id
             return user.to_dict(), 200
@@ -74,10 +82,16 @@ class CheckUsername(Resource):
     def post(self):
         data = request.get_json()
         username = data.get("username")
-        user = User.query.filter_by(username=username).first()
+        user = User.query.filter_by(username=username.lower()).first()
         if user:
             return {"error": "409 - Conflict"}, 409
         return {}, 200
+
+
+class BrowseListings(Resource):
+    def get(self):
+        listings = [listing.to_dict() for listing in Listing.query.all()]
+        return listings, 200
 
 
 @app.route("/")
@@ -92,6 +106,7 @@ api.add_resource(CheckSession, "/check_session", endpoint="check_session")
 api.add_resource(Login, "/login", endpoint="login")
 api.add_resource(Logout, "/logout", endpoint="logout")
 api.add_resource(CheckUsername, "/check_username", endpoint="check_username")
+api.add_resource(BrowseListings, "/browse_listings", endpoint="browse_listings")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
