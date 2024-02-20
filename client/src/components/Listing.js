@@ -1,16 +1,20 @@
 import { useState } from "react";
 import { Popover, OverlayTrigger, Button, Card } from "react-bootstrap";
+import EditListingForm from "./EditListingForm";
 
-function Listing({ listing, currentUser }) {
+function Listing({ listing, currentUser, handleEditListing }) {
+  const [showPopover, setShowPopover] = useState(false);
   const user = listing.user;
 
   const editPopover = (
     <Popover id="popover-basic">
       <Popover.Header as="h3">Edit your listing below</Popover.Header>
       <Popover.Body>
-        <form>
-          <input type="text" placeholder="new details"></input>
-        </form>
+        <EditListingForm
+          listing={listing}
+          handleEditListing={handleEditListing}
+          setShowPopover={setShowPopover}
+        ></EditListingForm>
       </Popover.Body>
     </Popover>
   );
@@ -21,11 +25,16 @@ function Listing({ listing, currentUser }) {
           <small>{user.username}</small>
           {user.username === currentUser.username ? (
             <OverlayTrigger
+              show={showPopover}
               trigger="click"
               placement="right"
               overlay={editPopover}
             >
-              <Button>Edit</Button>
+              <Button
+                onClick={(e) => setShowPopover((showPopover) => !showPopover)}
+              >
+                Edit
+              </Button>
             </OverlayTrigger>
           ) : null}
         </Card.Header>
@@ -41,28 +50,6 @@ function Listing({ listing, currentUser }) {
           </div>
         </Card.Body>
       </Card>
-      {/* 
-         <div className="card h-100">
-         <div className="card-body">
-          <small>{user.username}</small>
-          {user.username === currentUser.username ? (
-            <OverlayTrigger
-              trigger="click"
-              placement="right"
-              overlay={editPopover}
-            >
-              <Button>Edit</Button>
-            </OverlayTrigger>
-          ) : null}
-          <h5 className="card-title">{listing.title}</h5>
-          <img src={listing.img_url} className="mx-auto img-fluid" />
-          <p className="card-text">{listing.description}</p>
-          <div className="d-flex justify-content-between">
-            <span className="card-subtitle">{listing.zip}</span>
-            <span className="card-subtitle">{listing.meeting_place}</span>
-          </div>
-        </div> 
-          </div>*/}
     </div>
   );
 }

@@ -94,6 +94,26 @@ class BrowseListings(Resource):
         return listings, 200
 
 
+class ListingByID(Resource):
+    def patch(self, id):
+        listing = Listing.query.filter_by(id=id).first()
+        data = request.get_json()
+        try:
+            for attr in data:
+                setattr(listing, attr, data.get(attr))
+            db.session.add(listing)
+            db.session.commit()
+            return listing.to_dict(), 200
+        except:
+            return {"error": "422 - Unprocessable Entity"}, 422
+
+    def delete(self, id):
+        listing = Listing.query.filter_by(id=id).first()
+        db.session.delete(listing)
+        db.session.commit()
+        return {"message": "listing successfully deleted"}, 204
+
+
 @app.route("/")
 @app.route("/<int:id>")
 def index():
@@ -107,6 +127,7 @@ api.add_resource(Login, "/login", endpoint="login")
 api.add_resource(Logout, "/logout", endpoint="logout")
 api.add_resource(CheckUsername, "/check_username", endpoint="check_username")
 api.add_resource(BrowseListings, "/browse_listings", endpoint="browse_listings")
+api.add_resource(ListingByID, "/listings/<int:id>", endpoint="listings/<int:id>")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
