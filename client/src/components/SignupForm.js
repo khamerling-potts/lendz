@@ -3,7 +3,7 @@ import { useFetcher, useOutletContext } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-function SignupForm({ user, setUser }) {
+function SignupForm({ currentUser, setCurrentUser }) {
   const [usernameTaken, setUsernameTaken] = useState(false);
 
   //   function handleSubmit(e) {
@@ -64,7 +64,7 @@ function SignupForm({ user, setUser }) {
       };
       fetch("/signup", configObj).then((r) => {
         if (r.ok) {
-          r.json().then((user) => setUser(user));
+          r.json().then((user) => setCurrentUser(user));
         } else {
           r.json().then((err) => console.log(err));
         }

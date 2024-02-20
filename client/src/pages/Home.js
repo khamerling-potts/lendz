@@ -4,6 +4,7 @@ import Listing from "../components/Listing";
 
 function Home() {
   const [listings, setListings] = useState([]);
+  const { currentUser } = useOutletContext();
 
   // When Home page loads, request all browseable listings to be displayed
   useEffect(() => {
@@ -13,7 +14,7 @@ function Home() {
   }, []);
 
   const listings_to_display = listings.map((listing) => (
-    <Listing key={listing.id} listing={listing} />
+    <Listing key={listing.id} listing={listing} currentUser={currentUser} />
   ));
 
   return (

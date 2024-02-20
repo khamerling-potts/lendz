@@ -5,14 +5,14 @@ import "./App.css";
 import Login from "./pages/Login";
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
 
   // Automatically checks login
   useEffect(() => {
     fetch("/check_session").then((r) => {
       if (r.ok) {
-        r.json().then((user) => setUser(user));
+        r.json().then((user) => setCurrentUser(user));
       }
     });
   }, []);
@@ -20,9 +20,13 @@ function App() {
   return (
     <>
       <header>
-        <NavBar user={user} setUser={setUser} />
+        <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
       </header>
-      {user ? <Outlet /> : <Login user={user} setUser={setUser} />}
+      {currentUser ? (
+        <Outlet context={{ currentUser }} />
+      ) : (
+        <Login currentUser={currentUser} setCurrentUser={setCurrentUser} />
+      )}
     </>
   );
 }

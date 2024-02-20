@@ -1,11 +1,11 @@
 import { NavLink } from "react-router-dom";
-function NavBar({ user, setUser }) {
+function NavBar({ currentUser, setCurrentUser }) {
   function handleLogout(e) {
     fetch("/logout", { method: "DELETE" }).then((r) => {
-      if (r.ok) setUser(null);
+      if (r.ok) setCurrentUser(null);
     });
   }
-  if (user) {
+  if (currentUser) {
     return (
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
@@ -24,7 +24,7 @@ function NavBar({ user, setUser }) {
           </div>
         </div>
         <div className="container-fluid justify-content-end">
-          <span>Hi, {user.username}</span>
+          <span>Hi, {currentUser.username}</span>
           <button id="logout" onClick={handleLogout}>
             Log Out
           </button>

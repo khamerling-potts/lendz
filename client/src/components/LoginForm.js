@@ -3,31 +3,8 @@ import { useOutletContext } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-function LoginForm({ user, setUser }) {
-  //   const [username, setUsername] = useState("");
-  //   const [password, setPassword] = useState("");
+function LoginForm({ currentUser, setCurrentUser }) {
   const [valid, setValid] = useState(true);
-
-  //   function handleSubmit(e) {
-  //     e.preventDefault();
-  //     const configObj = {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         username,
-  //         password,
-  //       }),
-  //     };
-  //     fetch("/login", configObj).then((r) => {
-  //       if (r.ok) {
-  //         r.json().then((user) => setUser(user));
-  //       } else {
-  //         r.json().then((err) => setValid(false));
-  //       }
-  //     });
-  //   }
 
   const formik = useFormik({
     initialValues: {
@@ -48,7 +25,7 @@ function LoginForm({ user, setUser }) {
       };
       fetch("/login", configObj).then((r) => {
         if (r.ok) {
-          r.json().then((user) => setUser(user));
+          r.json().then((user) => setCurrentUser(user));
         } else {
           r.json().then((err) => setValid(false));
         }
