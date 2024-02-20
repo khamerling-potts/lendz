@@ -34,12 +34,10 @@ def check_logged_in():
 class Signup(Resource):
     def post(self):
         data = request.get_json()
-        print(data)
         [username, password] = [data.get("username"), data.get("password")]
         try:
             new_user = User(username=username, rating=None)
             new_user.password_hash = password
-            print(new_user)
             db.session.add(new_user)
             db.session.commit()
             session["user_id"] = new_user.id

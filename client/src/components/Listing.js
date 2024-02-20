@@ -2,9 +2,20 @@ import { useState } from "react";
 import { Popover, OverlayTrigger, Button, Card } from "react-bootstrap";
 import EditListingForm from "./EditListingForm";
 
-function Listing({ listing, currentUser, handleEditListing }) {
+function Listing({
+  listing,
+  currentUser,
+  handleEditListing,
+  handleDeleteListing,
+}) {
   const [showPopover, setShowPopover] = useState(false);
   const user = listing.user;
+
+  function onDeleteListing() {
+    fetch(`/listings/${listing.id}`, { method: "DELETE" }).then((r) =>
+      handleDeleteListing(listing.id)
+    );
+  }
 
   const editPopover = (
     <Popover id="popover-basic">
@@ -18,24 +29,44 @@ function Listing({ listing, currentUser, handleEditListing }) {
       </Popover.Body>
     </Popover>
   );
+
+  const deletePopover = (
+    <Popover id="popover-basic">
+      <Popover.Header as="h3">
+        Are you sure you want to delete your listing?
+      </Popover.Header>
+      <Popover.Body>
+        <Button onClick={onDeleteListing}>Delete Listing</Button>
+      </Popover.Body>
+    </Popover>
+  );
   return (
     <div className="col-sm-6 col-md-4 col-lg-3">
       <Card className="h-100">
         <Card.Header>
           <small>{user.username}</small>
           {user.username === currentUser.username ? (
-            <OverlayTrigger
-              show={showPopover}
-              trigger="click"
-              placement="right"
-              overlay={editPopover}
-            >
-              <Button
-                onClick={(e) => setShowPopover((showPopover) => !showPopover)}
+            <>
+              <OverlayTrigger
+                show={showPopover}
+                trigger="click"
+                placement="right"
+                overlay={editPopover}
               >
-                Edit
-              </Button>
-            </OverlayTrigger>
+                <Button
+                  onClick={(e) => setShowPopover((showPopover) => !showPopover)}
+                >
+                  Edit
+                </Button>
+              </OverlayTrigger>
+              <OverlayTrigger
+                trigger="click"
+                placement="right"
+                overlay={deletePopover}
+              >
+                <Button>Delete</Button>
+              </OverlayTrigger>
+            </>
           ) : null}
         </Card.Header>
         <Card.Body>

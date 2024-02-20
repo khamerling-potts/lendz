@@ -3,7 +3,8 @@ import { useOutletContext } from "react-router-dom";
 import Listing from "../components/Listing";
 
 function Home() {
-  const { currentUser, listings, handleEditListing } = useOutletContext();
+  const { currentUser, listings, handleEditListing, handleDeleteListing } =
+    useOutletContext();
 
   const listings_to_display = listings.map((listing) => (
     <Listing
@@ -11,6 +12,7 @@ function Home() {
       listing={listing}
       currentUser={currentUser}
       handleEditListing={handleEditListing}
+      handleDeleteListing={handleDeleteListing}
     />
   ));
 

@@ -6,27 +6,6 @@ import * as Yup from "yup";
 function SignupForm({ currentUser, setCurrentUser }) {
   const [usernameTaken, setUsernameTaken] = useState(false);
 
-  //   function handleSubmit(e) {
-  //     e.preventDefault();
-  //     const configObj = {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         username,
-  //         password,
-  //       }),
-  //     };
-  //     fetch("/signup", configObj).then((r) => {
-  //       if (r.ok) {
-  //         r.json().then((user) => setUser(user));
-  //       } else {
-  //         r.json().then((err) => console.log(err));
-  //       }
-  //     });
-  //   }
-
   function handleChange(e) {
     formik.handleChange(e);
     const configObj = {

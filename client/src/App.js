@@ -19,9 +19,15 @@ function App() {
   }, []);
 
   // When app loads, request all database listings (to be displayed in nested routes)
+  //sometimes this useeffect doesn't trigger. is it bc of the one above?
   useEffect(() => {
+    console.log("browsing listings");
     fetch("/browse_listings").then((r) => {
-      if (r.ok) r.json().then((listings) => setListings(listings));
+      if (r.ok)
+        r.json().then((listings) => {
+          console.log(listings);
+          setListings(listings);
+        });
     });
   }, []);
 
@@ -32,13 +38,25 @@ function App() {
     setListings([...editedListings, editedListing]);
   }
 
+  function handleDeleteListing(id) {
+    const updatedListings = listings.filter((listing) => listing.id !== id);
+    setListings(updatedListings);
+  }
+
   return (
     <>
       <header>
         <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
       </header>
       {currentUser ? (
-        <Outlet context={{ currentUser, listings, handleEditListing }} />
+        <Outlet
+          context={{
+            currentUser,
+            listings,
+            handleEditListing,
+            handleDeleteListing,
+          }}
+        />
       ) : (
         <Login currentUser={currentUser} setCurrentUser={setCurrentUser} />
       )}
