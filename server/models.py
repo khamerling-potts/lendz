@@ -37,7 +37,7 @@ class User(db.Model, SerializerMixin):
     # Association proxy mapping users to their claimed listings (many to many)
     claimed_listings = association_proxy(
         "claims",
-        "listings",
+        "listing",
         creator=lambda listing_obj: Claim(claimed_listing=listing_obj),
     )
 
@@ -94,7 +94,7 @@ class Listing(db.Model, SerializerMixin):
 
     # Association proxy mapping listings to their claimed users (many to many)
     claimed_users = association_proxy(
-        "claims", "users", creator=lambda user_obj: Claim(claimed_user=user_obj)
+        "claims", "user", creator=lambda user_obj: Claim(claimed_user=user_obj)
     )
 
     @validates("title")
@@ -147,3 +147,6 @@ class Claim(db.Model, SerializerMixin):
     # Foreign key and relationship mapping claims to listings
     listing_id = db.Column(db.Integer, db.ForeignKey("listings.id"))
     listing = db.relationship("Listing", back_populates="claims")
+
+    def __repr__(self):
+        return f"Claim {self.id}, {self.comment}"
