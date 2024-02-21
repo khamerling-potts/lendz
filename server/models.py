@@ -2,6 +2,7 @@ from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
+import datetime
 
 
 from config import db, bcrypt
@@ -11,15 +12,33 @@ from config import db, bcrypt
 class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
-    serialize_rules = ("-owned_listings.user", "-_password_hash")
+    serialize_rules = (
+        "-owned_listings.user",
+        "-_password_hash",
+        "-claims.user",
+        "-claimed_listings.user",
+    )
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
     rating = db.Column(db.Float, db.CheckConstraint("1 <= rating <= 5"), nullable=True)
     _password_hash = db.Column(db.String)
 
+    # Relationship mapping users to their owned listings (one to many)
     owned_listings = db.relationship(
         "Listing", back_populates="user", cascade="all, delete-orphan"
+    )
+
+    # Relationship mapping users to their claims (one to many)
+    claims = db.relationship(
+        "Claim", back_populates="user", cascade="all, delete-orphan"
+    )
+
+    # Association proxy mapping users to their claimed listings (many to many)
+    claimed_listings = association_proxy(
+        "claims",
+        "listings",
+        creator=lambda listing_obj: Claim(claimed_listing=listing_obj),
     )
 
     # what is this?
@@ -50,6 +69,13 @@ class User(db.Model, SerializerMixin):
 class Listing(db.Model, SerializerMixin):
     __tablename__ = "listings"
 
+    serialize_rules = (
+        "-user.owned_listings",
+        "-claimed_users.claimed_listings",
+        "-claimed_users.owned_listings",
+        "-claims.listing",
+    )
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     img_url = db.Column(db.String, nullable=False)
@@ -57,8 +83,19 @@ class Listing(db.Model, SerializerMixin):
     zip = db.Column(db.Integer, nullable=False)
     meeting_place = db.Column(db.String, nullable=False)
 
+    # Foreign key and relationship mapping listings to the user that owns them
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     user = db.relationship("User", back_populates="owned_listings")
+
+    # Relationship mapping listings to their claims (one to many)
+    claims = db.relationship(
+        "Claim", back_populates="listing", cascade="all, delete-orphan"
+    )
+
+    # Association proxy mapping listings to their claimed users (many to many)
+    claimed_users = association_proxy(
+        "claims", "users", creator=lambda user_obj: Claim(claimed_user=user_obj)
+    )
 
     @validates("title")
     def validate_title(self, key, title):
@@ -87,3 +124,26 @@ class Listing(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f"Listing {self.title}, ID {self.id}"
+
+
+class Claim(db.Model, SerializerMixin):
+    __tablename__ = "claims"
+
+    serialize_rules = ("-user.claims", "-listing.claims")
+
+    # try this if times are wrong
+    # def default_time():
+    #     return datetime.datetime.now()
+
+    id = db.Column(db.Integer, primary_key=True)
+    comment = db.Column(db.String, nullable=False)
+    time = db.Column(db.DateTime, default=datetime.datetime.now(), nullable=False)
+    selected = db.Column(db.Boolean, default=False, nullable=False)
+
+    # Foreign key and relationship mapping claims to users
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user = db.relationship("User", back_populates="claims")
+
+    # Foreign key and relationship mapping claims to listings
+    listing_id = db.Column(db.Integer, db.ForeignKey("listings.id"))
+    listing = db.relationship("Listing", back_populates="claims")
