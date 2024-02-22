@@ -115,6 +115,10 @@ class ListingByID(Resource):
 class CreateListing(Resource):
     def post(self):
         data = request.get_json()
+        print(data)
+        # use setattr?
+        # use a conditional and only set if it has value (create helper function for this)
+
         [title, img_url, description, zip, meeting_place] = [
             data.get("title"),
             data.get("img_url"),
@@ -123,18 +127,23 @@ class CreateListing(Resource):
             data.get("meeting_place"),
         ]
         user_id = session.get("user_id")
-        print(user_id)
-        user = User.query.filter_by(id=user_id).first()
-        if user:
+        # print(user_id)
+        # user = User.query.filter_by(id=user_id).first()
+        if user_id:
             try:
                 listing = Listing(
                     title=title,
-                    img_url=img_url,
                     description=description,
                     zip=zip,
-                    meeting_place=meeting_place,
                     user_id=user_id,
                 )
+                print(listing)
+                if img_url:
+                    setattr(listing, "img_url", img_url)
+                print(2)
+                if meeting_place:
+                    setattr(listing, "meeting_place", meeting_place)
+                print(3)
                 db.session.add(listing)
                 db.session.commit()
                 return listing.to_dict(), 200
@@ -155,21 +164,21 @@ class CreateClaim(Resource):
             data.get("listing_id"),
         ]
         user_id = session.get("user_id")
-        user = User.query.filter_by(id=user_id).first()
-        listing = Listing.query.filter_by(id=listing_id).first()
+        # user = User.query.filter_by(id=user_id).first()
+        # listing = Listing.query.filter_by(id=listing_id).first()
 
-        if user and listing:
+        if user_id and listing_id:
             try:
                 claim = Claim(
                     comment=comment,
                     user_id=user_id,
-                    user=user,
                     listing_id=listing_id,
-                    listing=listing,
                 )
+                print(claim.user_id)
                 db.session.add(claim)
                 db.session.commit()
-                return claim.to_dict(), 200
+                listing = Listing.query.filter_by(id=listing_id).first()
+                return listing.to_dict(), 200
             except:
                 return {
                     "error": "422 - Unprocessable Entity (could not create claim)"

@@ -150,7 +150,7 @@ class Claim(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.String, nullable=False)
     time = db.Column(db.DateTime, server_default=func.now(), nullable=False)
-    selected = db.Column(db.Boolean, server_default="true", nullable=False)
+    selected = db.Column(db.Boolean, server_default="false", nullable=False)
 
     # Foreign key and relationship mapping claims to users
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))

@@ -83,7 +83,12 @@ function Listing({
             </Card.Subtitle>
           </div>
         </Card.Body>
-        <ClaimsFooter listing={listing} currentUser={currentUser} mine={mine} />
+        <ClaimsFooter
+          listing={listing}
+          currentUser={currentUser}
+          mine={mine}
+          handleEditListing={handleEditListing}
+        />
       </Card>
     </div>
   );
