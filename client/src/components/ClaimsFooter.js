@@ -1,16 +1,13 @@
 import { ListGroup, Button, Card } from "react-bootstrap";
+import Claim from "./Claim";
 
-function ClaimsFooter({ listing, currentUser }) {
+function ClaimsFooter({ listing, mine }) {
   const claims = listing.claims.map((claim) => (
-    <ListGroup.Item key={claim.id}>{claim.comment}</ListGroup.Item>
+    <Claim key={claim.id} claim={claim} mine={mine}></Claim>
   ));
   return (
     <Card.Footer>
-      {listing.user.username === currentUser.username ? (
-        <div>Select a claim below</div>
-      ) : (
-        <Button>Add claim</Button>
-      )}
+      {mine ? <div>Select a claim below</div> : <Button>Add claim</Button>}
       <ListGroup>{claims}</ListGroup>
     </Card.Footer>
   );

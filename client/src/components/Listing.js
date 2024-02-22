@@ -11,6 +11,8 @@ function Listing({
 }) {
   const [showPopover, setShowPopover] = useState(false);
   const user = listing.user;
+  //Bool stating whether or not this is your own listing
+  const mine = user.username === currentUser.username;
 
   function onDeleteListing() {
     fetch(`/listings/${listing.id}`, { method: "DELETE" }).then((r) =>
@@ -42,11 +44,11 @@ function Listing({
     </Popover>
   );
   return (
-    <div className="col-sm-6 col-md-4 col-lg-3">
+    <div className="col-md-6 col-lg-4">
       <Card className="h-100">
         <Card.Header>
           <small>{user.username}</small>
-          {user.username === currentUser.username ? (
+          {mine ? (
             <>
               <OverlayTrigger
                 show={showPopover}
@@ -81,7 +83,7 @@ function Listing({
             </Card.Subtitle>
           </div>
         </Card.Body>
-        <ClaimsFooter listing={listing} currentUser={currentUser} />
+        <ClaimsFooter listing={listing} currentUser={currentUser} mine={mine} />
       </Card>
     </div>
   );
