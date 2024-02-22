@@ -6,7 +6,7 @@ function Home() {
   const { currentUser, listings, handleEditListing, handleDeleteListing } =
     useOutletContext();
 
-  const listings_to_display = listings.map((listing) => (
+  const listingsToDisplay = listings.map((listing) => (
     <Listing
       key={listing.id}
       listing={listing}
@@ -20,7 +20,7 @@ function Home() {
     <div>
       <h1>Home</h1>
       <div className="container">
-        <div className="row justify-content-evenly">{listings_to_display}</div>
+        <div className="row justify-content-evenly">{listingsToDisplay}</div>
       </div>
     </div>
   );

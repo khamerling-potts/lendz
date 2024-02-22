@@ -25,7 +25,6 @@ function App() {
     fetch("/browse_listings").then((r) => {
       if (r.ok)
         r.json().then((listings) => {
-          console.log(listings);
           setListings(listings);
         });
     });
@@ -43,6 +42,10 @@ function App() {
     setListings(updatedListings);
   }
 
+  function handleCreateListing(listing) {
+    setListings([...listings, listing]);
+  }
+
   return (
     <>
       <header>
@@ -55,6 +58,7 @@ function App() {
             listings,
             handleEditListing,
             handleDeleteListing,
+            handleCreateListing,
           }}
         />
       ) : (

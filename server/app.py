@@ -115,14 +115,15 @@ class ListingByID(Resource):
 class CreateListing(Resource):
     def post(self):
         data = request.get_json()
-        [title, img_url, description, zip, meeting_place, user_id] = [
+        [title, img_url, description, zip, meeting_place] = [
             data.get("title"),
             data.get("img_url"),
             data.get("description"),
             data.get("zip"),
             data.get("meeting_place"),
-            data.get("user_id"),
         ]
+        user_id = session.get("user_id")
+        print(user_id)
         user = User.query.filter_by(id=user_id).first()
         if user:
             try:
@@ -137,22 +138,23 @@ class CreateListing(Resource):
                 db.session.add(listing)
                 db.session.commit()
                 return listing.to_dict(), 200
-            except:
+            except Exception as exc:
+                print(exc)
                 return {
                     "error": "422 - Unprocessable Entity (could not create listing)"
-                }
+                }, 422
         else:
-            return {"error": "422 - Unprocessable Entity (user not found)"}
+            return {"error": "401 - Unauthorized (user not found)"}, 422
 
 
 class CreateClaim(Resource):
     def post(self):
         data = request.get_json()
-        [comment, user_id, listing_id] = [
+        [comment, listing_id] = [
             data.get("comment"),
-            data.get("user_id"),
             data.get("listing_id"),
         ]
+        user_id = session.get("user_id")
         user = User.query.filter_by(id=user_id).first()
         listing = Listing.query.filter_by(id=listing_id).first()
 
@@ -176,6 +178,18 @@ class CreateClaim(Resource):
             return {"error": "422 - Unprocessable Entity (user or listing not found)"}
 
 
+# don't think I need this bc I can filter through all listings on the front end
+# class YourListings(Resource):
+#     # id refers to user id so you can browse your owned listings
+#     def get(self):
+#         user_id = session.get("user_id")
+#         if user_id:
+#             user = User.query.filter_by(id=user_id).first()
+#             owned_listings = [listing.to_dict() for listing in user.owned_listings]
+#             return owned_listings, 200
+#         return {"error": "401 - Unauthorized"}, 401
+
+
 @app.route("/")
 @app.route("/<int:id>")
 def index():
@@ -192,6 +206,7 @@ api.add_resource(BrowseListings, "/browse_listings", endpoint="browse_listings")
 api.add_resource(ListingByID, "/listings/<int:id>", endpoint="listings/<int:id>")
 api.add_resource(CreateListing, "/create_listing", endpoint="create_listing")
 api.add_resource(CreateClaim, "/create_claim", endpoint="create_claim")
+# api.add_resource(YourListings, "/your_listings", endpoint="your_listings")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)

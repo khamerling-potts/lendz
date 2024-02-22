@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Popover, OverlayTrigger, Button, Card } from "react-bootstrap";
 import EditListingForm from "./EditListingForm";
+import ClaimsFooter from "./ClaimsFooter";
 
 function Listing({
   listing,
@@ -80,6 +81,7 @@ function Listing({
             </Card.Subtitle>
           </div>
         </Card.Body>
+        <ClaimsFooter listing={listing} currentUser={currentUser} />
       </Card>
     </div>
   );

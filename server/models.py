@@ -1,8 +1,10 @@
+from sqlalchemy import func
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
-import datetime
+
+# import datetime, functools
 
 
 from config import db, bcrypt
@@ -78,10 +80,14 @@ class Listing(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
-    img_url = db.Column(db.String, nullable=False)
+    img_url = db.Column(
+        db.String,
+        server_default="https://weedman.com/images/no-available-image.jpg",
+        nullable=False,
+    )
     description = db.Column(db.String, nullable=False)
     zip = db.Column(db.Integer, nullable=False)
-    meeting_place = db.Column(db.String, nullable=False)
+    meeting_place = db.Column(db.String, server_default="TBD", nullable=False)
 
     # Foreign key and relationship mapping listings to the user that owns them
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
@@ -122,6 +128,12 @@ class Listing(db.Model, SerializerMixin):
             return int(zip)  # add number conversion?
         raise ValueError("zip code must be a 5 digit number")
 
+    @validates("img_url")
+    def validares_img_url(self, key, img_url):
+        if not img_url:
+            raise ValueError("img url must be present")
+        return img_url
+
     def __repr__(self):
         return f"Listing {self.title}, ID {self.id}"
 
@@ -137,8 +149,8 @@ class Claim(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.String, nullable=False)
-    time = db.Column(db.DateTime, default=datetime.datetime.now(), nullable=False)
-    selected = db.Column(db.Boolean, default=False, nullable=False)
+    time = db.Column(db.DateTime, server_default=func.now(), nullable=False)
+    selected = db.Column(db.Boolean, server_default="true", nullable=False)
 
     # Foreign key and relationship mapping claims to users
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
