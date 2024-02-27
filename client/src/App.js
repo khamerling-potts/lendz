@@ -30,11 +30,13 @@ function App() {
     });
   }, []);
 
+  // Updates listings with the newly edited listing, sorting by id to keep display order consistent
   function handleEditListing(editedListing) {
-    const editedListings = listings.filter(
+    let editedListings = listings.filter(
       (listing) => listing.id !== editedListing.id
     );
-    setListings([...editedListings, editedListing]);
+    editedListings.push(editedListing);
+    setListings(editedListings.sort((a, b) => a.id - b.id));
   }
 
   function handleDeleteListing(id) {

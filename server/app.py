@@ -137,13 +137,10 @@ class CreateListing(Resource):
                     zip=zip,
                     user_id=user_id,
                 )
-                print(listing)
                 if img_url:
                     setattr(listing, "img_url", img_url)
-                print(2)
                 if meeting_place:
                     setattr(listing, "meeting_place", meeting_place)
-                print(3)
                 db.session.add(listing)
                 db.session.commit()
                 return listing.to_dict(), 200
@@ -156,6 +153,7 @@ class CreateListing(Resource):
             return {"error": "401 - Unauthorized (user not found)"}, 422
 
 
+# Returns the listing updated with its new claim. This simplifies updating state on the front end
 class CreateClaim(Resource):
     def post(self):
         data = request.get_json()
@@ -171,10 +169,9 @@ class CreateClaim(Resource):
             try:
                 claim = Claim(
                     comment=comment,
-                    user_id=user_id,
+                    user_id=1,
                     listing_id=listing_id,
                 )
-                print(claim.user_id)
                 db.session.add(claim)
                 db.session.commit()
                 listing = Listing.query.filter_by(id=listing_id).first()
@@ -184,7 +181,9 @@ class CreateClaim(Resource):
                     "error": "422 - Unprocessable Entity (could not create claim)"
                 }, 422
         else:
-            return {"error": "422 - Unprocessable Entity (user or listing not found)"}
+            return {
+                "error": "422 - Unprocessable Entity (user or listing not found)"
+            }, 422
 
 
 # don't think I need this bc I can filter through all listings on the front end

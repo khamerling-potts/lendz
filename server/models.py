@@ -16,10 +16,13 @@ class User(db.Model, SerializerMixin):
 
     serialize_rules = (
         "-owned_listings.user",
+        "-owned_listings.claimed_users",
         "-_password_hash",
         "-claims.user",
         "-claimed_listings.user",
+        "-claimed_listings.claimed_users",
     )
+    # serialize_rules = ("-owned_listings", "-claims", "-claimed_listings")
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
@@ -73,10 +76,12 @@ class Listing(db.Model, SerializerMixin):
 
     serialize_rules = (
         "-user.owned_listings",
+        "-user.claimed_listings",
         "-claimed_users.claimed_listings",
         "-claimed_users.owned_listings",
         "-claims.listing",
     )
+    # serialize_rules = "-user, claims, claimed_users"
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
@@ -141,7 +146,14 @@ class Listing(db.Model, SerializerMixin):
 class Claim(db.Model, SerializerMixin):
     __tablename__ = "claims"
 
-    serialize_rules = ("-user.claims", "-listing.claims")
+    # serialize_rules = ("-user.claims", "-listing.claims", "-listing", "-user")
+    serialize_rules = (
+        "-user.owned_listings",
+        "-user.claims",
+        "-user.claimed_listings",
+        "-listing",
+    )
+    # serialize_only = ("id", "comment", "time", "selected")
 
     # try this if times are wrong
     # def default_time():
