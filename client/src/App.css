@@ -21,3 +21,9 @@ Card {
   object-fit: cover;
   width: auto;
 }
+/* .claim #select-claim {
+  display: none;
+}
+.claim:hover #select-claim {
+  display: initial;
+} */
