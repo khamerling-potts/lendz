@@ -44,7 +44,7 @@ function Listing({
     </Popover>
   );
   return (
-    <div className="col-md-6 col-lg-4">
+    <div className="col">
       <Card className="h-100">
         <Card.Header>
           <small>{user.username}</small>
@@ -74,7 +74,7 @@ function Listing({
         </Card.Header>
         <Card.Body>
           <Card.Title>{listing.title}</Card.Title>
-          <img src={listing.img_url} className="mx-auto img-fluid" />
+          <Card.Img src={listing.img_url} className="card-img img-fluid" />
           <Card.Text>{listing.description}</Card.Text>
           <div className="d-flex justify-content-between">
             <Card.Subtitle>{listing.zip}</Card.Subtitle>

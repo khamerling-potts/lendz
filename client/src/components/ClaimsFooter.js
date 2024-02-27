@@ -1,4 +1,4 @@
-import { ListGroup, Button, Card, Form } from "react-bootstrap";
+import { ListGroup, Button, Card, Form, InputGroup } from "react-bootstrap";
 import Claim from "./Claim";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -13,7 +13,7 @@ function ClaimsFooter({ listing, currentUser, mine, handleEditListing }) {
     validationSchema: Yup.object({
       comment: Yup.string().required("Comment required"),
     }),
-    onSubmit: (values) => {
+    onSubmit: (values, actions) => {
       const configObj = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -26,23 +26,31 @@ function ClaimsFooter({ listing, currentUser, mine, handleEditListing }) {
           console.log(r);
         }
       });
+      actions.resetForm();
     },
   });
   return (
     <Card.Footer>
-      <ListGroup className="overflow-auto">{claims}</ListGroup>
-      <Form onSubmit={formik.handleSubmit}>
-        <Form.Group>
-          <Form.Control
-            as="textarea"
-            placeholder="Add a claim..."
-            {...formik.getFieldProps("comment")}
-          />
-          <Button type="submit" onSubmit={formik.handleSubmit}>
-            +Add
-          </Button>
-        </Form.Group>
-      </Form>
+      <label htmlFor="claims">Claims</label>
+      <ListGroup className="overflow-auto" id="claims">
+        {claims}
+      </ListGroup>
+      {mine ? null : (
+        <Form onSubmit={formik.handleSubmit}>
+          <InputGroup>
+            <Form.Control
+              as="textarea"
+              placeholder="Add a claim..."
+              {...formik.getFieldProps("comment")}
+            />
+            <InputGroup.Text>
+              <Button type="submit" onSubmit={formik.handleSubmit}>
+                +Add
+              </Button>
+            </InputGroup.Text>
+          </InputGroup>
+        </Form>
+      )}
     </Card.Footer>
   );
 }

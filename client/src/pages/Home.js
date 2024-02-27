@@ -17,12 +17,14 @@ function Home() {
   ));
 
   return (
-    <div>
+    <>
       <h1>Home</h1>
-      <div className="container">
-        <div className="row justify-content-evenly">{listingsToDisplay}</div>
+      <div className="container pt-5 pb-5">
+        <div className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 overflow-auto">
+          {listingsToDisplay}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 export default Home;

@@ -6,3 +6,18 @@
   color: red;
   display: block;
 }
+.container {
+  max-height: 90vh;
+  max-width: 90%;
+}
+.row {
+  max-height: 90vh;
+}
+/* .col,
+Card {
+  max-height: 50vh;
+} */
+.card-img {
+  object-fit: cover;
+  width: auto;
+}

@@ -38,8 +38,10 @@ function YourListings() {
     <div>
       <h1>Your Listings</h1>
       <CreateListingForm handleCreateListing={handleCreateListing} />
-      <div className="container">
-        <div className="row justify-content-evenly">{listingsToDisplay}</div>
+      <div className="container overflow-auto pt-5 pb-5">
+        <div className="row row-cols-lg-3 row-cols-sm-2 g-4">
+          {listingsToDisplay}
+        </div>
       </div>
     </div>
   );

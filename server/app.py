@@ -17,9 +17,12 @@ from models import User, Listing, Claim
 
 
 # ONLY used to clear the database in development. Consider commenting out for production
+# Uncomment the model that you want to clear
 class ResetDB(Resource):
     def get(self):
-        User.query.delete()
+        # User.query.delete()
+        # Listing.query.delete()
+        Claim.query.delete()
         db.session.commit()
         return {"message": "200 - Successfully cleared User database"}, 200
 
