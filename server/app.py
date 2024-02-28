@@ -156,7 +156,7 @@ class ListingByID(Resource):
 
 
 # Returns the listing updated with its new claim. This simplifies updating state on the front end
-class CreateClaim(Resource):
+class Claims(Resource):
     def post(self):
         data = request.get_json()
         [comment, listing_id] = [
@@ -169,12 +169,12 @@ class CreateClaim(Resource):
 
         if user_id and listing_id:
             try:
-                claim = Claim(
+                updated_claim = Claim(
                     comment=comment,
                     user_id=1,
                     listing_id=listing_id,
                 )
-                db.session.add(claim)
+                db.session.add(updated_claim)
                 db.session.commit()
                 listing = Listing.query.filter_by(id=listing_id).first()
                 return listing.to_dict(), 200
@@ -183,9 +183,39 @@ class CreateClaim(Resource):
                     "error": "422 - Unprocessable Entity (could not create claim)"
                 }, 422
         else:
-            return {
-                "error": "422 - Unprocessable Entity (user or listing not found)"
-            }, 422
+            # consider making this more logical
+            return {"error": "401 - Unauthorized (user or listing not found)"}, 422
+
+
+# also returns updated listing
+class ClaimByID(Resource):
+    def patch(self, id):
+        user_id = session.get("user_id")
+
+        if user_id:
+            data = request.get_json()
+            try:
+                updated_claim = Claim.query.filter_by(id=id).first()
+
+                # if we're selecting a claim, unselect all others first
+                if data.get("action") == "select":
+                    for claim in updated_claim.listing.claims:
+                        claim.selected = False
+
+                for attr in data:
+                    if attr != "action":
+                        setattr(updated_claim, attr, data.get(attr))
+
+                # Commit all adjacent listings before retrieving updated listing
+                db.session.add_all(updated_claim.listing.claims)
+                db.session.commit()
+
+                listing = Listing.query.filter_by(id=updated_claim.listing.id).first()
+                return listing.to_dict(), 200
+            except:
+                return {"error": "422 - Unprocessable Entity"}, 422
+        else:
+            return {"error": "401 - Unauthorized"}, 401
 
 
 # don't think I need this bc I can filter through all listings on the front end
@@ -213,8 +243,9 @@ api.add_resource(Login, "/login", endpoint="login")
 api.add_resource(Logout, "/logout", endpoint="logout")
 api.add_resource(CheckUsername, "/check_username", endpoint="check_username")
 api.add_resource(Listings, "/listings", endpoint="listings")
-api.add_resource(ListingByID, "/listings/<int:id>", endpoint="listings/<int:id>")
-api.add_resource(CreateClaim, "/claims", endpoint="claims")
+api.add_resource(ListingByID, "/listings/<int:id>", endpoint="listing")
+api.add_resource(Claims, "/claims", endpoint="claims")
+api.add_resource(ClaimByID, "/claims/<int:id>", endpoint="claim")
 # api.add_resource(YourListings, "/your_listings", endpoint="your_listings")
 
 if __name__ == "__main__":

@@ -5,8 +5,14 @@ import * as Yup from "yup";
 
 function ClaimsFooter({ listing, currentUser, mine, handleEditListing }) {
   const claims = listing.claims.map((claim) => (
-    <Claim key={claim.id} claim={claim} mine={mine}></Claim>
+    <Claim
+      key={claim.id}
+      claim={claim}
+      mine={mine}
+      handleEditListing={handleEditListing}
+    ></Claim>
   ));
+  claims.sort((a, b) => a.id - b.id);
 
   const formik = useFormik({
     initialValues: { comment: "" },
