@@ -164,14 +164,13 @@ class Claims(Resource):
             data.get("listing_id"),
         ]
         user_id = session.get("user_id")
-        # user = User.query.filter_by(id=user_id).first()
         # listing = Listing.query.filter_by(id=listing_id).first()
 
         if user_id and listing_id:
             try:
                 updated_claim = Claim(
                     comment=comment,
-                    user_id=1,
+                    user_id=user_id,
                     listing_id=listing_id,
                 )
                 db.session.add(updated_claim)

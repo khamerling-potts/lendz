@@ -25,7 +25,7 @@ function App() {
     fetch("/listings").then((r) => {
       if (r.ok)
         r.json().then((listings) => {
-          setListings(listings);
+          setListings(listings.sort((a, b) => a.id - b.id));
         });
     });
   }, []);

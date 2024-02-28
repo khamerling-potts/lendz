@@ -4,7 +4,6 @@ import Listing from "../components/Listing";
 import CreateListingForm from "../components/CreateListingForm";
 
 function YourListings() {
-  // const [yourListings, setYourListings] = useState([]);
   const {
     currentUser,
     listings,
@@ -15,14 +14,6 @@ function YourListings() {
   const yourListings = listings.filter(
     (listing) => listing.user_id === currentUser.id
   );
-
-  // useEffect(() => {
-  //   fetch("/your_listings").then((r) => {
-  //     if (r.ok) {
-  //       r.json().then((listings) => setYourListings(listings));
-  //     }
-  //   });
-  // }, []);
 
   const listingsToDisplay = yourListings.map((listing) => (
     <Listing

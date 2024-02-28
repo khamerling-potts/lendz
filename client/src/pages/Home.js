@@ -15,7 +15,6 @@ function Home() {
       handleDeleteListing={handleDeleteListing}
     />
   ));
-
   return (
     <>
       <h1>Home</h1>

@@ -10,9 +10,15 @@ function Listing({
   handleDeleteListing,
 }) {
   const [showPopover, setShowPopover] = useState(false);
+  let selectedClaim = listing.claims.find((claim) => claim.selected);
+
   const user = listing.user;
-  //Bool stating whether or not this is your own listing
+  /* Bool stating whether or not this is your own listing */
   const mine = user.username === currentUser.username;
+  /* Bool - Only give the option to rate if you're the listing poster or claimer */
+  const rate =
+    selectedClaim &&
+    (mine || selectedClaim.user.username == currentUser.username);
 
   function onDeleteListing() {
     fetch(`/listings/${listing.id}`, { method: "DELETE" }).then((r) =>
@@ -46,6 +52,12 @@ function Listing({
   return (
     <div className="col">
       <Card className="h-100">
+        {rate ? (
+          <Card.Header>
+            Handoff complete? Rate{" "}
+            {mine ? selectedClaim.user.username : user.username} now!
+          </Card.Header>
+        ) : null}
         <Card.Header>
           <small>{user.username}</small>
           {mine ? (

@@ -12,7 +12,9 @@ function Claim({ listing, claim, mine, handleEditListing }) {
     };
     fetch(`/claims/${claim.id}`, configObj).then((r) => {
       if (r.ok) {
-        r.json().then((listing) => handleEditListing(listing));
+        r.json().then((listing) => {
+          handleEditListing(listing);
+        });
       }
     });
   }
