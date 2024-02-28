@@ -13,7 +13,7 @@ from config import app, db, api
 from models import User, Listing, Claim
 
 
-# Views go here!
+### RESOURCES ###
 
 
 # ONLY used to clear the database in development. Consider commenting out for production
@@ -27,11 +27,20 @@ class ResetDB(Resource):
         return {"message": "200 - Successfully cleared User database"}, 200
 
 
-# Authorize user before any requests to browse listings,
+# Authorizing requests
 @app.before_request
 def check_logged_in():
-    if request.endpoint in ["listings"] and not session.get("user_id"):
-        return {"error": "401 - Unauthorized"}, 401
+    if request.endpoint not in ["users", "login", "reset", "check_username"]:
+        print("checking logged in")
+        if not session["user_id"]:
+            return {"error": "Unauthorized"}, 401
+    # user_id = session.get("user_id")
+    # if request.endpoint not in ["users", "login", "reset"]:
+    #     if user_id:
+    #         user = User.query.filter_by(id=user_id).first()
+    #         return user.to_dict(), 200
+    #     else:
+    #         return {"error": "401 - Unauthorized"}, 401
 
 
 class Users(Resource):
@@ -51,31 +60,32 @@ class Users(Resource):
 
 class UserByID(Resource):
     def patch(self, id):
-        if session.get("user_id"):
-            data = request.get_json()
-            try:
-                updated_user = User.query.filter_by(id=id).first()
-                for attr in data:
-                    # If a user has ratings, append the new one to the list
-                    if attr == "rating":
-                        if updated_user.ratings:
-                            updated_user.ratings.append(data["rating"])
-                        else:
-                            updated_user.ratings = [data["rating"]]
+        # if session.get("user_id"):
+        data = request.get_json()
+        try:
+            updated_user = User.query.filter_by(id=id).first()
+            for attr in data:
+                # If a user has ratings, append the new one to the list
+                if attr == "rating":
+                    if updated_user.ratings:
+                        updated_user.ratings.append(data["rating"])
                     else:
-                        setattr(updated_user, attr, data[attr])
-                db.session.add(updated_user)
-                db.session.commit()
-                return updated_user.to_dict(), 200
-            except:
-                return {"error": "422 - Unprocessable Entity"}, 422
-        else:
-            return {"error": "401 - Unauthorized"}, 401
+                        updated_user.ratings = [data["rating"]]
+                else:
+                    setattr(updated_user, attr, data[attr])
+            db.session.add(updated_user)
+            db.session.commit()
+            return updated_user.to_dict(), 200
+        except:
+            return {"error": "422 - Unprocessable Entity"}, 422
+
+    # else:
+    #     return {"error": "401 - Unauthorized"}, 401
 
 
 class CheckSession(Resource):
     def get(self):
-        if request.endpoint != "reset" and request.endpoint != "signup":
+        if request.endpoint != "reset" and request.endpoint != "user":
             user_id = session.get("user_id")
             if user_id:
                 user = User.query.filter_by(id=user_id).first()
@@ -97,10 +107,11 @@ class Login(Resource):
 
 class Logout(Resource):
     def delete(self):
-        if session.get("user_id"):
-            session["user_id"] = None
-            return {}, 204
-        return {"error": "401 - Unauthorized"}, 401
+        # if session.get("user_id"):
+        session["user_id"] = None
+        return {}, 204
+
+    # return {"error": "401 - Unauthorized"}, 401
 
 
 class CheckUsername(Resource):
@@ -134,38 +145,50 @@ class Listings(Resource):
         user_id = session.get("user_id")
         # print(user_id)
         # user = User.query.filter_by(id=user_id).first()
-        if user_id:
-            try:
-
-                listing = Listing(
-                    title=title,
-                    description=description,
-                    zip=zip,
-                    user_id=user_id,
-                )
-                if img_url != "":
-                    setattr(listing, "img_url", img_url)
-                if meeting_place != "":
-                    setattr(listing, "meeting_place", meeting_place)
-                db.session.add(listing)
-                db.session.commit()
-                return listing.to_dict(), 200
-            except Exception as exc:
-                print(exc)
-                return {
-                    "error": "422 - Unprocessable Entity (could not create listing)"
-                }, 422
-        else:
-            return {"error": "401 - Unauthorized (user not found)"}, 422
+        # if user_id:
+        try:
+            listing = Listing(
+                title=title,
+                description=description,
+                zip=zip,
+                user_id=user_id,
+            )
+            if img_url != "":
+                setattr(listing, "img_url", img_url)
+            if meeting_place != "":
+                setattr(listing, "meeting_place", meeting_place)
+            db.session.add(listing)
+            db.session.commit()
+            return listing.to_dict(), 200
+        except Exception as exc:
+            print(exc)
+            return {
+                "error": "422 - Unprocessable Entity (could not create listing)"
+            }, 422
+        # else:
+        #     return {"error": "401 - Unauthorized (user not found)"}, 422
 
 
 class ListingByID(Resource):
     def patch(self, id):
         listing = Listing.query.filter_by(id=id).first()
         data = request.get_json()
+
         try:
+            # If someone deletes the optional img url or meeting place from their listing,
+            # set them back to the defaults
             for attr in data:
-                setattr(listing, attr, data[attr])
+                if attr == "img_url" and data[attr] == "":
+                    setattr(
+                        listing,
+                        attr,
+                        "https://weedman.com/images/no-available-image.jpg",
+                    )
+                elif attr == "meeting_place" and data[attr] == "":
+                    setattr(listing, attr, "TBD")
+                else:
+                    setattr(listing, attr, data[attr])
+
             db.session.add(listing)
             db.session.commit()
             return listing.to_dict(), 200
@@ -190,7 +213,8 @@ class Claims(Resource):
         user_id = session.get("user_id")
         # listing = Listing.query.filter_by(id=listing_id).first()
 
-        if user_id and listing_id:
+        # if user_id and listing_id:
+        if listing_id:
             try:
                 updated_claim = Claim(
                     comment=comment,
@@ -206,8 +230,10 @@ class Claims(Resource):
                     "error": "422 - Unprocessable Entity (could not create claim)"
                 }, 422
         else:
-            # consider making this more logical
-            return {"error": "401 - Unauthorized (user or listing not found)"}, 422
+            return {"error": "404 - Listing Not Found"}, 404
+        # else:
+        #     # consider making this more logical
+        #     return {"error": "401 - Unauthorized (user or listing not found)"}, 422
 
 
 # also returns updated listing
@@ -215,30 +241,30 @@ class ClaimByID(Resource):
     def patch(self, id):
         user_id = session.get("user_id")
 
-        if user_id:
-            data = request.get_json()
-            try:
-                updated_claim = Claim.query.filter_by(id=id).first()
+        # if user_id:
+        data = request.get_json()
+        try:
+            updated_claim = Claim.query.filter_by(id=id).first()
 
-                # if we're selecting a claim, unselect all others first
-                if data.get("action") == "select":
-                    for claim in updated_claim.listing.claims:
-                        claim.selected = False
+            # if we're selecting a claim, unselect all others first
+            if data.get("action") == "select":
+                for claim in updated_claim.listing.claims:
+                    claim.selected = False
 
-                for attr in data:
-                    if attr != "action":
-                        setattr(updated_claim, attr, data[attr])
+            for attr in data:
+                if attr != "action":
+                    setattr(updated_claim, attr, data[attr])
 
-                # Commit all adjacent listings before retrieving updated listing
-                db.session.add_all(updated_claim.listing.claims)
-                db.session.commit()
+            # Commit all adjacent listings before retrieving updated listing
+            db.session.add_all(updated_claim.listing.claims)
+            db.session.commit()
 
-                listing = Listing.query.filter_by(id=updated_claim.listing.id).first()
-                return listing.to_dict(), 200
-            except:
-                return {"error": "422 - Unprocessable Entity"}, 422
-        else:
-            return {"error": "401 - Unauthorized"}, 401
+            listing = Listing.query.filter_by(id=updated_claim.listing.id).first()
+            return listing.to_dict(), 200
+        except:
+            return {"error": "422 - Unprocessable Entity"}, 422
+        # else:
+        #     return {"error": "401 - Unauthorized"}, 401
 
 
 # don't think I need this bc I can filter through all listings on the front end
