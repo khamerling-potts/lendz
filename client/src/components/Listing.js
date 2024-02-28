@@ -9,6 +9,7 @@ function Listing({
   handleEditListing,
   handleDeleteListing,
 }) {
+  console.log(currentUser);
   const [showPopover, setShowPopover] = useState(false);
   let selectedClaim = listing.claims.find((claim) => claim.selected);
 

@@ -45,18 +45,32 @@ class Users(Resource):
             db.session.commit()
             session["user_id"] = new_user.id
             return new_user.to_dict(), 201
-        except Exception as exc:
+        except:
             return {"error": "422 - Unprocessable Entity"}, 422
 
 
-# class UserByID(Resource):
-#     def patch(self, id):
-#         if session.get('user_id'):
-#             data = request.get_json()
-#             updated_user = User.query.filter_by(id=id).first()
-#             for attr in data:
-#                 # If a user has a rating,
-#                 if attr == 'rating' and not updated_user.rating:
+class UserByID(Resource):
+    def patch(self, id):
+        if session.get("user_id"):
+            data = request.get_json()
+            try:
+                updated_user = User.query.filter_by(id=id).first()
+                for attr in data:
+                    # If a user has ratings, append the new one to the list
+                    if attr == "rating":
+                        if updated_user.ratings:
+                            updated_user.ratings.append(data["rating"])
+                        else:
+                            updated_user.ratings = [data["rating"]]
+                    else:
+                        setattr(updated_user, attr, data[attr])
+                db.session.add(updated_user)
+                db.session.commit()
+                return updated_user.to_dict(), 200
+            except:
+                return {"error": "422 - Unprocessable Entity"}, 422
+        else:
+            return {"error": "401 - Unauthorized"}, 401
 
 
 class CheckSession(Resource):
@@ -151,7 +165,7 @@ class ListingByID(Resource):
         data = request.get_json()
         try:
             for attr in data:
-                setattr(listing, attr, data.get(attr))
+                setattr(listing, attr, data[attr])
             db.session.add(listing)
             db.session.commit()
             return listing.to_dict(), 200
@@ -213,7 +227,7 @@ class ClaimByID(Resource):
 
                 for attr in data:
                     if attr != "action":
-                        setattr(updated_claim, attr, data.get(attr))
+                        setattr(updated_claim, attr, data[attr])
 
                 # Commit all adjacent listings before retrieving updated listing
                 db.session.add_all(updated_claim.listing.claims)
@@ -246,6 +260,7 @@ def index():
 
 
 api.add_resource(Users, "/users", endpoint="users")
+api.add_resource(UserByID, "/users/<int:id>", endpoint="user")
 api.add_resource(ResetDB, "/reset", endpoint="reset")
 api.add_resource(CheckSession, "/check_session", endpoint="check_session")
 api.add_resource(Login, "/login", endpoint="login")
