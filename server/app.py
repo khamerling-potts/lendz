@@ -34,7 +34,7 @@ def check_logged_in():
         return {"error": "401 - Unauthorized"}, 401
 
 
-class Signup(Resource):
+class Users(Resource):
     def post(self):
         data = request.get_json()
         [username, password] = [data.get("username"), data.get("password")]
@@ -47,6 +47,16 @@ class Signup(Resource):
             return new_user.to_dict(), 201
         except Exception as exc:
             return {"error": "422 - Unprocessable Entity"}, 422
+
+
+# class UserByID(Resource):
+#     def patch(self, id):
+#         if session.get('user_id'):
+#             data = request.get_json()
+#             updated_user = User.query.filter_by(id=id).first()
+#             for attr in data:
+#                 # If a user has a rating,
+#                 if attr == 'rating' and not updated_user.rating:
 
 
 class CheckSession(Resource):
@@ -235,7 +245,7 @@ def index():
     return "<h1>Project Server</h1>"
 
 
-api.add_resource(Signup, "/signup", endpoint="signup")
+api.add_resource(Users, "/users", endpoint="users")
 api.add_resource(ResetDB, "/reset", endpoint="reset")
 api.add_resource(CheckSession, "/check_session", endpoint="check_session")
 api.add_resource(Login, "/login", endpoint="login")

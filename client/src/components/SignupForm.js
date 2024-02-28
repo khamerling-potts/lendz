@@ -41,7 +41,7 @@ function SignupForm({ currentUser, setCurrentUser }) {
         },
         body: JSON.stringify(values, null, 2),
       };
-      fetch("/signup", configObj).then((r) => {
+      fetch("/users", configObj).then((r) => {
         if (r.ok) {
           r.json().then((user) => setCurrentUser(user));
         } else {
