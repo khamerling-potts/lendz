@@ -10,6 +10,7 @@ function YourListings() {
     handleEditListing,
     handleDeleteListing,
     handleCreateListing,
+    requestListings,
   } = useOutletContext();
   const yourListings = listings.filter(
     (listing) => listing.user_id === currentUser.id
@@ -22,6 +23,7 @@ function YourListings() {
       currentUser={currentUser}
       handleEditListing={handleEditListing}
       handleDeleteListing={handleDeleteListing}
+      requestListings={requestListings}
     />
   ));
 
@@ -29,8 +31,8 @@ function YourListings() {
     <div>
       <h1>Your Listings</h1>
       <CreateListingForm handleCreateListing={handleCreateListing} />
-      <div className="container overflow-auto pt-5 pb-5">
-        <div className="row row-cols-lg-3 row-cols-sm-2 g-4">
+      <div className="container ">
+        <div className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 overflow-auto pt-5 pb-5">
           {listingsToDisplay}
         </div>
       </div>

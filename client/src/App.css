@@ -27,3 +27,19 @@ Card {
 .claim:hover #select-claim {
   display: initial;
 } */
+
+.rating:hover i {
+  color: #fc0;
+  text-shadow: #fc0 0 0 10px;
+}
+.rating i,
+.rating i:hover ~ i {
+  color: #222;
+  text-shadow: none;
+  transition: color 200ms, text-shadow 200ms;
+  /* This will remove the delay when
+     moving the cursor left or right
+     within the set of stars. */
+  transition-delay: 0;
+  cursor: pointer;
+}

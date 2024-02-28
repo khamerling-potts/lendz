@@ -3,6 +3,10 @@ import { ListGroup, Row, Col, Button } from "react-bootstrap";
 
 function Claim({ listing, claim, mine, handleEditListing }) {
   const [hover, setHover] = useState(false);
+  const ratings = claim.user.ratings;
+  const avg_rating = ratings
+    ? ratings.reduce((acc, current) => acc + current, 0) / ratings.length
+    : null;
 
   function onSelectClaim(e) {
     const configObj = {
@@ -30,7 +34,11 @@ function Claim({ listing, claim, mine, handleEditListing }) {
       onMouseLeave={(e) => setHover(false)}
     >
       <Row>
-        <Col xs={2}>{claim.user.username}</Col>
+        <Col xs={2}>
+          {claim.user.username}
+          <br />
+          {avg_rating}
+        </Col>
         <Col xs={6}>{claim.comment}</Col>
         <Col xs={4}>
           {claim.time}

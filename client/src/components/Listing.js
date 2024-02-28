@@ -2,24 +2,30 @@ import { useState } from "react";
 import { Popover, OverlayTrigger, Button, Card } from "react-bootstrap";
 import EditListingForm from "./EditListingForm";
 import ClaimsFooter from "./ClaimsFooter";
+import RateHeader from "./RateHeader";
 
 function Listing({
   listing,
   currentUser,
   handleEditListing,
   handleDeleteListing,
+  requestListings,
 }) {
-  console.log(currentUser);
   const [showPopover, setShowPopover] = useState(false);
+
   let selectedClaim = listing.claims.find((claim) => claim.selected);
 
   const user = listing.user;
   /* Bool stating whether or not this is your own listing */
   const mine = user.username === currentUser.username;
   /* Bool - Only give the option to rate if you're the listing poster or claimer */
-  const rate =
-    selectedClaim &&
-    (mine || selectedClaim.user.username == currentUser.username);
+  const rate = selectedClaim
+    ? mine || selectedClaim.user.username == currentUser.username
+    : false;
+  /* Assigns who to rate based on your user role */
+  const userToRate = rate ? (mine ? selectedClaim.user : user) : null;
+
+  console.log(rate);
 
   function onDeleteListing() {
     fetch(`/listings/${listing.id}`, { method: "DELETE" }).then((r) =>
@@ -54,10 +60,10 @@ function Listing({
     <div className="col">
       <Card className="h-100">
         {rate ? (
-          <Card.Header>
-            Handoff complete? Rate{" "}
-            {mine ? selectedClaim.user.username : user.username} now!
-          </Card.Header>
+          <RateHeader
+            userToRate={userToRate}
+            requestListings={requestListings}
+          />
         ) : null}
         <Card.Header>
           <small>{user.username}</small>

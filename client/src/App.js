@@ -18,18 +18,21 @@ function App() {
     });
   }, []);
 
-  // When app loads, request all database listings (to be displayed in nested routes)
-  //sometimes this useeffect doesn't trigger. is it bc of the one above?
+  // When app loads, request all listings (to be displayed in nested routes)
   useEffect(() => {
+    requestListings();
+  }, []);
+
+  /* Request all listings from server */
+  function requestListings() {
     console.log("browsing listings");
     fetch("/listings").then((r) => {
       if (r.ok)
         r.json().then((listings) => {
-          console.log(listings);
           setListings(listings.sort((a, b) => a.id - b.id));
         });
     });
-  }, []);
+  }
 
   // Updates listings with the newly edited listing, sorting by id to keep display order consistent
   function handleEditListing(editedListing) {
@@ -62,6 +65,7 @@ function App() {
             handleEditListing,
             handleDeleteListing,
             handleCreateListing,
+            requestListings,
           }}
         />
       ) : (
