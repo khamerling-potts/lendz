@@ -7,10 +7,10 @@ function CreateListingForm({ handleCreateListing }) {
   const formik = useFormik({
     initialValues: {
       title: "",
-      img_url: null,
+      img_url: "",
       description: "",
       zip: "",
-      meeting_place: null,
+      meeting_place: "",
     },
     validationScheme: Yup.object({
       title: Yup.string()
@@ -32,7 +32,7 @@ function CreateListingForm({ handleCreateListing }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values, null, 2),
       };
-      fetch(`/create_listing`, configObj).then((r) => {
+      fetch(`/listings`, configObj).then((r) => {
         if (r.ok) {
           r.json().then((listing) => {
             handleCreateListing(listing);

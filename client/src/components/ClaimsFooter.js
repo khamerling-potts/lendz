@@ -19,7 +19,7 @@ function ClaimsFooter({ listing, currentUser, mine, handleEditListing }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...values, listing_id: listing.id }, null, 2),
       };
-      fetch("/create_claim", configObj).then((r) => {
+      fetch("/claims", configObj).then((r) => {
         if (r.ok) {
           r.json().then((listing) => handleEditListing(listing));
         } else {

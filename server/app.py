@@ -30,7 +30,7 @@ class ResetDB(Resource):
 # Authorize user before any requests to browse listings,
 @app.before_request
 def check_logged_in():
-    if request.endpoint in ["browse_listings"] and not session.get("user_id"):
+    if request.endpoint in ["listings"] and not session.get("user_id"):
         return {"error": "401 - Unauthorized"}, 401
 
 
@@ -89,10 +89,50 @@ class CheckUsername(Resource):
         return {}, 200
 
 
-class BrowseListings(Resource):
+class Listings(Resource):
     def get(self):
         listings = [listing.to_dict() for listing in Listing.query.all()]
         return listings, 200
+
+    def post(self):
+        data = request.get_json()
+        print(data)
+        # use setattr?
+        # use a conditional and only set if it has value (create helper function for this)
+
+        [title, img_url, description, zip, meeting_place] = [
+            data.get("title"),
+            data.get("img_url"),
+            data.get("description"),
+            data.get("zip"),
+            data.get("meeting_place"),
+        ]
+        user_id = session.get("user_id")
+        # print(user_id)
+        # user = User.query.filter_by(id=user_id).first()
+        if user_id:
+            try:
+
+                listing = Listing(
+                    title=title,
+                    description=description,
+                    zip=zip,
+                    user_id=user_id,
+                )
+                if img_url != "":
+                    setattr(listing, "img_url", img_url)
+                if meeting_place != "":
+                    setattr(listing, "meeting_place", meeting_place)
+                db.session.add(listing)
+                db.session.commit()
+                return listing.to_dict(), 200
+            except Exception as exc:
+                print(exc)
+                return {
+                    "error": "422 - Unprocessable Entity (could not create listing)"
+                }, 422
+        else:
+            return {"error": "401 - Unauthorized (user not found)"}, 422
 
 
 class ListingByID(Resource):
@@ -113,47 +153,6 @@ class ListingByID(Resource):
         db.session.delete(listing)
         db.session.commit()
         return {"message": "listing successfully deleted"}, 204
-
-
-class CreateListing(Resource):
-    def post(self):
-        data = request.get_json()
-        print(data)
-        # use setattr?
-        # use a conditional and only set if it has value (create helper function for this)
-
-        [title, img_url, description, zip, meeting_place] = [
-            data.get("title"),
-            data.get("img_url"),
-            data.get("description"),
-            data.get("zip"),
-            data.get("meeting_place"),
-        ]
-        user_id = session.get("user_id")
-        # print(user_id)
-        # user = User.query.filter_by(id=user_id).first()
-        if user_id:
-            try:
-                listing = Listing(
-                    title=title,
-                    description=description,
-                    zip=zip,
-                    user_id=user_id,
-                )
-                if img_url:
-                    setattr(listing, "img_url", img_url)
-                if meeting_place:
-                    setattr(listing, "meeting_place", meeting_place)
-                db.session.add(listing)
-                db.session.commit()
-                return listing.to_dict(), 200
-            except Exception as exc:
-                print(exc)
-                return {
-                    "error": "422 - Unprocessable Entity (could not create listing)"
-                }, 422
-        else:
-            return {"error": "401 - Unauthorized (user not found)"}, 422
 
 
 # Returns the listing updated with its new claim. This simplifies updating state on the front end
@@ -213,10 +212,9 @@ api.add_resource(CheckSession, "/check_session", endpoint="check_session")
 api.add_resource(Login, "/login", endpoint="login")
 api.add_resource(Logout, "/logout", endpoint="logout")
 api.add_resource(CheckUsername, "/check_username", endpoint="check_username")
-api.add_resource(BrowseListings, "/browse_listings", endpoint="browse_listings")
+api.add_resource(Listings, "/listings", endpoint="listings")
 api.add_resource(ListingByID, "/listings/<int:id>", endpoint="listings/<int:id>")
-api.add_resource(CreateListing, "/create_listing", endpoint="create_listing")
-api.add_resource(CreateClaim, "/create_claim", endpoint="create_claim")
+api.add_resource(CreateClaim, "/claims", endpoint="claims")
 # api.add_resource(YourListings, "/your_listings", endpoint="your_listings")
 
 if __name__ == "__main__":

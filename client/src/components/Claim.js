@@ -14,7 +14,7 @@ function Claim({ listing, claim, mine }) {
         <Col xs={6}>{claim.comment}</Col>
         <Col xs={4}>
           {claim.time}
-          {hover ? <Button id="select-claim>">Select</Button> : null}
+          {hover && mine ? <Button id="select-claim>">Select</Button> : null}
         </Col>
       </Row>
     </ListGroup.Item>

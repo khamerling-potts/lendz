@@ -22,7 +22,7 @@ function App() {
   //sometimes this useeffect doesn't trigger. is it bc of the one above?
   useEffect(() => {
     console.log("browsing listings");
-    fetch("/browse_listings").then((r) => {
+    fetch("/listings").then((r) => {
       if (r.ok)
         r.json().then((listings) => {
           setListings(listings);
