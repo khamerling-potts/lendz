@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm({ currentUser, setCurrentUser }) {
   const [valid, setValid] = useState(true);
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -25,7 +27,10 @@ function LoginForm({ currentUser, setCurrentUser }) {
       };
       fetch("/login", configObj).then((r) => {
         if (r.ok) {
-          r.json().then((user) => setCurrentUser(user));
+          r.json().then((user) => {
+            setCurrentUser(user);
+            navigate("/");
+          });
         } else {
           r.json().then((err) => setValid(false));
         }

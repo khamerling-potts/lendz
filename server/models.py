@@ -2,6 +2,7 @@ from sqlalchemy import func
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 
@@ -27,7 +28,7 @@ class User(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
-    ratings = db.Column(ARRAY(db.Integer), nullable=True)
+    ratings = db.Column(MutableList.as_mutable(ARRAY(db.Integer)), nullable=True)
     _password_hash = db.Column(db.String)
 
     # Relationship mapping users to their owned listings (one to many)

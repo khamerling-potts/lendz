@@ -25,7 +25,15 @@ function Listing({
   /* Assigns who to rate based on your user role */
   const userToRate = rate ? (mine ? selectedClaim.user : user) : null;
 
-  console.log(rate);
+  /* Calculating average user rating, rounding to 1 decimal */
+  function calculateRating(user) {
+    const ratings = user.ratings;
+    const avgRating = ratings
+      ? ratings.reduce((acc, current) => acc + current, 0) / ratings.length
+      : null;
+    const avgRatingRounded = avgRating ? Math.round(avgRating * 10) / 10 : null;
+    return avgRatingRounded;
+  }
 
   function onDeleteListing() {
     fetch(`/listings/${listing.id}`, { method: "DELETE" }).then((r) =>
@@ -67,6 +75,7 @@ function Listing({
         ) : null}
         <Card.Header>
           <small>{user.username}</small>
+          <span className="badge">{calculateRating(user)}</span>
           {mine ? (
             <>
               <OverlayTrigger
@@ -107,6 +116,7 @@ function Listing({
           currentUser={currentUser}
           mine={mine}
           handleEditListing={handleEditListing}
+          calculateRating={calculateRating}
         />
       </Card>
     </div>

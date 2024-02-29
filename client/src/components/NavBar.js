@@ -1,8 +1,13 @@
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 function NavBar({ currentUser, setCurrentUser }) {
+  const navigate = useNavigate();
   function handleLogout(e) {
     fetch("/logout", { method: "DELETE" }).then((r) => {
-      if (r.ok) setCurrentUser(null);
+      if (r.ok) {
+        setCurrentUser(null);
+        navigate("/login");
+      }
     });
   }
   if (currentUser) {
@@ -29,6 +34,10 @@ function NavBar({ currentUser, setCurrentUser }) {
             Log Out
           </button>
         </div>
+        {/* <span>Hi, {currentUser.username}</span>
+              <NavLink id="logout" to="/login">
+                Log Out
+              </NavLink> */}
       </nav>
     );
   } else {

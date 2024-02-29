@@ -3,13 +3,20 @@ import Claim from "./Claim";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-function ClaimsFooter({ listing, currentUser, mine, handleEditListing }) {
+function ClaimsFooter({
+  listing,
+  currentUser,
+  mine,
+  handleEditListing,
+  calculateRating,
+}) {
   const claims = listing.claims.map((claim) => (
     <Claim
       key={claim.id}
       claim={claim}
       mine={mine}
       handleEditListing={handleEditListing}
+      calculateRating={calculateRating}
     ></Claim>
   ));
   claims.sort((a, b) => a.id - b.id);

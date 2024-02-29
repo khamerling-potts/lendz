@@ -30,17 +30,16 @@ class ResetDB(Resource):
 # Authorizing requests
 @app.before_request
 def check_logged_in():
-    if request.endpoint not in ["users", "login", "reset", "check_username"]:
+    if request.endpoint not in [
+        "users",
+        "login",
+        "reset",
+        "check_username",
+        "check_session",
+    ]:
         print("checking logged in")
         if not session["user_id"]:
             return {"error": "Unauthorized"}, 401
-    # user_id = session.get("user_id")
-    # if request.endpoint not in ["users", "login", "reset"]:
-    #     if user_id:
-    #         user = User.query.filter_by(id=user_id).first()
-    #         return user.to_dict(), 200
-    #     else:
-    #         return {"error": "401 - Unauthorized"}, 401
 
 
 class Users(Resource):
@@ -60,27 +59,27 @@ class Users(Resource):
 
 class UserByID(Resource):
     def patch(self, id):
-        # if session.get("user_id"):
         data = request.get_json()
         try:
             updated_user = User.query.filter_by(id=id).first()
             for attr in data:
                 # If a user has ratings, append the new one to the list
                 if attr == "rating":
+                    print("currently rating")
                     if updated_user.ratings:
                         updated_user.ratings.append(data["rating"])
+                        print(updated_user.ratings)
                     else:
                         updated_user.ratings = [data["rating"]]
                 else:
+                    print("updating something else")
                     setattr(updated_user, attr, data[attr])
             db.session.add(updated_user)
             db.session.commit()
+            print(updated_user.to_dict())
             return updated_user.to_dict(), 200
         except:
             return {"error": "422 - Unprocessable Entity"}, 422
-
-    # else:
-    #     return {"error": "401 - Unauthorized"}, 401
 
 
 class CheckSession(Resource):
@@ -107,11 +106,8 @@ class Login(Resource):
 
 class Logout(Resource):
     def delete(self):
-        # if session.get("user_id"):
         session["user_id"] = None
         return {}, 204
-
-    # return {"error": "401 - Unauthorized"}, 401
 
 
 class CheckUsername(Resource):
@@ -145,7 +141,6 @@ class Listings(Resource):
         user_id = session.get("user_id")
         # print(user_id)
         # user = User.query.filter_by(id=user_id).first()
-        # if user_id:
         try:
             listing = Listing(
                 title=title,
@@ -165,8 +160,6 @@ class Listings(Resource):
             return {
                 "error": "422 - Unprocessable Entity (could not create listing)"
             }, 422
-        # else:
-        #     return {"error": "401 - Unauthorized (user not found)"}, 422
 
 
 class ListingByID(Resource):
@@ -213,7 +206,6 @@ class Claims(Resource):
         user_id = session.get("user_id")
         # listing = Listing.query.filter_by(id=listing_id).first()
 
-        # if user_id and listing_id:
         if listing_id:
             try:
                 updated_claim = Claim(
@@ -231,9 +223,6 @@ class Claims(Resource):
                 }, 422
         else:
             return {"error": "404 - Listing Not Found"}, 404
-        # else:
-        #     # consider making this more logical
-        #     return {"error": "401 - Unauthorized (user or listing not found)"}, 422
 
 
 # also returns updated listing
@@ -241,7 +230,6 @@ class ClaimByID(Resource):
     def patch(self, id):
         user_id = session.get("user_id")
 
-        # if user_id:
         data = request.get_json()
         try:
             updated_claim = Claim.query.filter_by(id=id).first()
@@ -263,8 +251,6 @@ class ClaimByID(Resource):
             return listing.to_dict(), 200
         except:
             return {"error": "422 - Unprocessable Entity"}, 422
-        # else:
-        #     return {"error": "401 - Unauthorized"}, 401
 
 
 # don't think I need this bc I can filter through all listings on the front end
