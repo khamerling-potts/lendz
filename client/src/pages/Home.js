@@ -3,12 +3,27 @@ import { useOutletContext } from "react-router-dom";
 import Listing from "../components/Listing";
 
 function Home() {
+  const [listings, setListings] = useState([]);
+
+  useEffect(() => {
+    requestListings();
+  }, []);
+
+  /* Request all listings from server */
+  function requestListings() {
+    console.log("browsing listings");
+    fetch("/listings").then((r) => {
+      if (r.ok)
+        r.json().then((listings) => {
+          setListings(listings.sort((a, b) => a.id - b.id));
+        });
+    });
+  }
   const {
     currentUser,
-    listings,
-    handleEditListing,
-    handleDeleteListing,
-    requestListings,
+    // handleEditListing,
+    // handleDeleteListing,
+    // requestListings,
   } = useOutletContext();
 
   const listingsToDisplay = listings.map((listing) => (
@@ -21,6 +36,20 @@ function Home() {
       requestListings={requestListings}
     />
   ));
+
+  // Updates listings with the newly edited listing, sorting by id to keep display order consistent
+  function handleEditListing(editedListing) {
+    let editedListings = listings.filter(
+      (listing) => listing.id !== editedListing.id
+    );
+    editedListings.push(editedListing);
+    setListings(editedListings.sort((a, b) => a.id - b.id));
+  }
+
+  function handleDeleteListing(id) {
+    const updatedListings = listings.filter((listing) => listing.id !== id);
+    setListings(updatedListings);
+  }
   return (
     <>
       <h1>Home</h1>

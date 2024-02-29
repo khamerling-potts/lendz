@@ -3,11 +3,12 @@ import { useOutletContext } from "react-router-dom";
 import LoginForm from "../components/LoginForm";
 import SignupForm from "../components/SignupForm";
 
-function Login({ currentUser, setCurrentUser }) {
+function Login({ setCurrentUser }) {
+  // const { setCurrentUser } = useOutletContext();
   return (
     <>
-      <LoginForm currentUser={currentUser} setCurrentUser={setCurrentUser} />
-      <SignupForm currentUser={currentUser} setCurrentUser={setCurrentUser} />
+      <LoginForm setCurrentUser={setCurrentUser} />
+      <SignupForm setCurrentUser={setCurrentUser} />
     </>
   );
 }

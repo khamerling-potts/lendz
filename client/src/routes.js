@@ -21,10 +21,10 @@ const routes = [
         path: "/yourlistings",
         element: <YourListings />,
       },
-      {
-        path: "/login",
-        element: <Login />,
-      },
+      // {
+      //   path: "/login",
+      //   element: <Login />,
+      // },
     ],
   },
 ];

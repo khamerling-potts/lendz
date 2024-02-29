@@ -6,7 +6,7 @@ function NavBar({ currentUser, setCurrentUser }) {
     fetch("/logout", { method: "DELETE" }).then((r) => {
       if (r.ok) {
         setCurrentUser(null);
-        navigate("/login");
+        // navigate("/login");
       }
     });
   }

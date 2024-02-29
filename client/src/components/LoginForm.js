@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 
-function LoginForm({ currentUser, setCurrentUser }) {
+function LoginForm({ setCurrentUser }) {
   const [valid, setValid] = useState(true);
   const navigate = useNavigate();
 

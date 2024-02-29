@@ -6,51 +6,54 @@ import Login from "./pages/Login";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
-  const [listings, setListings] = useState([]);
+  // const [listings, setListings] = useState([]);
   const navigate = useNavigate();
 
   // Automatically checks login when app loads
   useEffect(() => {
     fetch("/check_session").then((r) => {
       if (r.ok) {
-        r.json().then((user) => setCurrentUser(user));
+        r.json().then((user) => {
+          setCurrentUser(user);
+          // requestListings();
+        });
       }
     });
   }, []);
 
   // When app loads, request all listings (to be displayed in nested routes)
-  useEffect(() => {
-    requestListings();
-  }, []);
+  // useEffect(() => {
+  //   requestListings();
+  // }, []);
 
-  /* Request all listings from server */
-  function requestListings() {
-    console.log("browsing listings");
-    fetch("/listings").then((r) => {
-      if (r.ok)
-        r.json().then((listings) => {
-          setListings(listings.sort((a, b) => a.id - b.id));
-        });
-    });
-  }
+  // /* Request all listings from server */
+  // function requestListings() {
+  //   console.log("browsing listings");
+  //   fetch("/listings").then((r) => {
+  //     if (r.ok)
+  //       r.json().then((listings) => {
+  //         setListings(listings.sort((a, b) => a.id - b.id));
+  //       });
+  //   });
+  // }
 
   // Updates listings with the newly edited listing, sorting by id to keep display order consistent
-  function handleEditListing(editedListing) {
-    let editedListings = listings.filter(
-      (listing) => listing.id !== editedListing.id
-    );
-    editedListings.push(editedListing);
-    setListings(editedListings.sort((a, b) => a.id - b.id));
-  }
+  // function handleEditListing(editedListing) {
+  //   let editedListings = listings.filter(
+  //     (listing) => listing.id !== editedListing.id
+  //   );
+  //   editedListings.push(editedListing);
+  //   setListings(editedListings.sort((a, b) => a.id - b.id));
+  // }
 
-  function handleDeleteListing(id) {
-    const updatedListings = listings.filter((listing) => listing.id !== id);
-    setListings(updatedListings);
-  }
+  // function handleDeleteListing(id) {
+  //   const updatedListings = listings.filter((listing) => listing.id !== id);
+  //   setListings(updatedListings);
+  // }
 
-  function handleCreateListing(listing) {
-    setListings([...listings, listing]);
-  }
+  // function handleCreateListing(listing) {
+  //   setListings([...listings, listing]);
+  // }
 
   return (
     <>
@@ -61,15 +64,16 @@ function App() {
         <Outlet
           context={{
             currentUser,
-            listings,
-            handleEditListing,
-            handleDeleteListing,
-            handleCreateListing,
-            requestListings,
+            setCurrentUser,
+            // listings,
+            // handleEditListing,
+            // handleDeleteListing,
+            // handleCreateListing,
+            // requestListings,
           }}
         />
       ) : (
-        <Login currentUser={currentUser} setCurrentUser={setCurrentUser} />
+        <Login setCurrentUser={setCurrentUser} />
       )}
     </>
   );
