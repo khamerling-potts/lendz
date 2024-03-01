@@ -17,11 +17,11 @@ class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
     serialize_rules = (
-        # "-owned_listings.user",
+        "-owned_listings.user",
         "-owned_listings.claimed_users",
         "-_password_hash",
         "-claims.user",
-        # "-claimed_listings.user",
+        "-claimed_listings.user",
         "-claimed_listings.claimed_users",
     )
     # serialize_rules = ("-owned_listings", "-claims", "-claimed_listings")

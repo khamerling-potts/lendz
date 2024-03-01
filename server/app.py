@@ -65,18 +65,14 @@ class UserByID(Resource):
             for attr in data:
                 # If a user has ratings, append the new one to the list
                 if attr == "rating":
-                    print("currently rating")
                     if updated_user.ratings:
                         updated_user.ratings.append(data["rating"])
-                        print(updated_user.ratings)
                     else:
                         updated_user.ratings = [data["rating"]]
                 else:
-                    print("updating something else")
                     setattr(updated_user, attr, data[attr])
             db.session.add(updated_user)
             db.session.commit()
-            print(updated_user.to_dict())
             return updated_user.to_dict(), 200
         except:
             return {"error": "422 - Unprocessable Entity"}, 422
@@ -127,7 +123,6 @@ class Listings(Resource):
 
     def post(self):
         data = request.get_json()
-        print(data)
         # use setattr?
         # use a conditional and only set if it has value (create helper function for this)
 
