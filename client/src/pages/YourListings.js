@@ -4,8 +4,11 @@ import Listing from "../components/Listing";
 import CreateListingForm from "../components/CreateListingForm";
 
 function YourListings() {
+  //const [yourListings, setYourListings] = useState([]);
+
   const {
     currentUser,
+    //updateListings,
     listings,
     handleEditListing,
     handleDeleteListing,
@@ -15,6 +18,20 @@ function YourListings() {
   const yourListings = listings.filter(
     (listing) => listing.user_id === currentUser.id
   );
+
+  // useEffect(() => {
+  //   setYourListings(currentUser.owned_listings.sort((a, b) => a.id - b.id));
+  // }, []);
+
+  // function handleEditListing(listing) {
+  //   const updatedListings = updateListings(yourListings, "edit", listing);
+  //   setYourListings(updatedListings);
+  // }
+
+  // function handleDeleteListing(id) {
+  //   const updatedListings = updateListings(yourListings, "delete", null, id);
+  //   setYourListings(updatedListings);
+  // }
 
   const listingsToDisplay = yourListings.map((listing) => (
     <Listing

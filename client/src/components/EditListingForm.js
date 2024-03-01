@@ -34,8 +34,8 @@ function EditListingForm({ listing, handleEditListing, setShowPopover }) {
       };
       fetch(`/listings/${listing.id}`, configObj).then((r) => {
         if (r.ok) {
-          r.json().then((data) => {
-            handleEditListing(data);
+          r.json().then((listing) => {
+            handleEditListing(listing);
             setShowPopover(false);
           });
         }
