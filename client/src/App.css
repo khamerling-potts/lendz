@@ -43,3 +43,7 @@ Card {
   transition-delay: 0;
   cursor: pointer;
 }
+
+.validation {
+  color: red;
+}
