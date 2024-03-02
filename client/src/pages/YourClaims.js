@@ -20,7 +20,7 @@ function YourClaims() {
   ));
 
   return (
-    <div>
+    <div className="page">
       <h1>Your Claimed Listings</h1>
       <div className="container ">
         <div className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 overflow-auto pt-5 pb-5">

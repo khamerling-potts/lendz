@@ -12,19 +12,28 @@ function EditListingForm({ listing, handleEditListing, setShowPopover }) {
       zip: listing.zip,
       meeting_place: listing.meeting_place,
     },
-    validationScheme: Yup.object({
+    validationSchema: Yup.object({
       title: Yup.string()
-        .max(50, "Must be 50 characters or less")
-        .required("Title required"),
+        .required("Title required")
+        .test(
+          "len",
+          "Must be 50 characters or less",
+          (value) => value.length <= 50
+        ),
       description: Yup.string()
-        .max(100, "Must be 100 characters or less")
-        .required("Description required"),
+        .required("Description required")
+        .test(
+          "len",
+          "Must be 100 characters or less",
+          (value) => value.length <= 100
+        ),
       zip: Yup.number()
         .integer()
         .positive()
         .typeError("Must be a number")
         .min(10000, "Please enter a 5-digit zip code")
-        .max(99999, "Please enter a 5-digit zip code"),
+        .max(99999, "Please enter a 5-digit zip code")
+        .required("Zip code required"),
     }),
     onSubmit: (values) => {
       const configObj = {
@@ -43,36 +52,113 @@ function EditListingForm({ listing, handleEditListing, setShowPopover }) {
     },
   });
 
+  // const formik = useFormik({
+  //   initialValues: {
+  //     title: listing.title,
+  //     img_url: listing.img_url,
+  //     description: listing.description,
+  //     zip: listing.zip,
+  //     meeting_place: listing.meeting_place,
+  //   },
+  //   validationScheme: Yup.object({
+  //     title: Yup.string()
+  //       .max(50, "Must be 50 characters or less")
+  //       .required("Title required"),
+  //     description: Yup.string()
+  //       .max(100, "Must be 100 characters or less")
+  //       .required("Description required"),
+  //     zip: Yup.number()
+  //       .integer()
+  //       .positive()
+  //       .typeError("Must be a number")
+  //       .min(10000, "Please enter a 5-digit zip code")
+  //       .max(99999, "Please enter a 5-digit zip code"),
+  //   }),
+  //   onSubmit: (values) => {
+  //     const configObj = {
+  //       method: "PATCH",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(values, null, 2),
+  //     };
+  //     fetch(`/listings/${listing.id}`, configObj).then((r) => {
+  //       if (r.ok) {
+  //         r.json().then((listing) => {
+  //           handleEditListing(listing);
+  //           setShowPopover(false);
+  //         });
+  //       }
+  //     });
+  //   },
+  // });
+
   return (
-    <Form onSubmit={formik.handleSubmit}>
+    <Form onSubmit={formik.handleSubmit} id="editListingForm">
       <Form.Group>
-        <Form.Label>Title*</Form.Label>
+        <Form.Label className="mb-0 mt-2">*Title </Form.Label>
         <Form.Control
           type="text"
+          id="title"
+          placeholder="Enter title here..."
           {...formik.getFieldProps("title")}
         ></Form.Control>
-        <Form.Label>Image URL</Form.Label>
+        {formik.touched.title && formik.errors.title ? (
+          <Form.Text className="validation text-small">
+            {formik.errors.title}
+          </Form.Text>
+        ) : null}
+      </Form.Group>
+
+      <Form.Group>
+        <Form.Label className="mb-0 mt-2">Image URL </Form.Label>
         <Form.Control
           type="text"
+          id="img_url"
+          placeholder="Image URL"
           {...formik.getFieldProps("img_url")}
         ></Form.Control>
-        <Form.Label>Description*</Form.Label>
-        <Form.Control
-          as="textarea"
-          {...formik.getFieldProps("description")}
-        ></Form.Control>
-        <Form.Label>Zip Code*</Form.Label>
+      </Form.Group>
+
+      <Form.Group>
+        <Form.Label className="mb-0 mt-2">*Zip Code </Form.Label>
         <Form.Control
           type="number"
+          id="zip"
+          placeholder="Enter zip code here..."
           {...formik.getFieldProps("zip")}
         ></Form.Control>
-        <Form.Label>Meeting Place</Form.Label>
+        {formik.touched.zip && formik.errors.zip ? (
+          <Form.Text className="validation text-small">
+            {formik.errors.zip}
+          </Form.Text>
+        ) : null}
+      </Form.Group>
+
+      <Form.Group>
+        <Form.Label className="mb-0 mt-2">Meeting Place</Form.Label>
         <Form.Control
           type="text"
+          id="meeting_place"
+          placeholder="Meeting Place"
           {...formik.getFieldProps("meeting_place")}
         ></Form.Control>
-        <Button type="submit">Save</Button>
       </Form.Group>
+
+      <Form.Group>
+        <Form.Label className="mb-0">*Description</Form.Label>
+        <Form.Control
+          as="textarea"
+          id="description"
+          placeholder="Enter description here..."
+          {...formik.getFieldProps("description")}
+        ></Form.Control>
+        {formik.touched.description && formik.errors.description ? (
+          <Form.Text className="validation text-small">
+            {formik.errors.description}
+          </Form.Text>
+        ) : null}
+      </Form.Group>
+
+      <Button type="submit">Save</Button>
     </Form>
   );
 }

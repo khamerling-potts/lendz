@@ -53,7 +53,7 @@ function CreateListingForm({ handleCreateListing }) {
   });
 
   return (
-    <div className="container createListingForm">
+    <div className="container createListingForm col-lg-6 col-sm-12">
       <Form
         onSubmit={formik.handleSubmit}
         className="row g-3"
@@ -114,7 +114,7 @@ function CreateListingForm({ handleCreateListing }) {
         </Form.Group>
 
         <Form.Group>
-          <Form.Label className="mb-0 mt-2">*Description</Form.Label>
+          <Form.Label className="mb-0">*Description</Form.Label>
           <Form.Control
             className="form-control-sm"
             as="textarea"

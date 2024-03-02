@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import Listing from "../components/Listing";
 import CreateListingForm from "../components/CreateListingForm";
+import { Button } from "react-bootstrap";
 
 function YourListings() {
   //const [yourListings, setYourListings] = useState([]);
@@ -45,11 +46,22 @@ function YourListings() {
   ));
 
   return (
-    <div>
+    <div className="page">
       <h1>Your Listings</h1>
-      <CreateListingForm handleCreateListing={handleCreateListing} />
+      <Button
+        data-bs-toggle="collapse"
+        data-bs-target="#createListingForm"
+        aria-expanded="false"
+        aria-controls="createListingForm"
+      >
+        Create Listing
+      </Button>
+      <div className="collapse" id="createListingForm">
+        <CreateListingForm handleCreateListing={handleCreateListing} />
+      </div>
+
       <div className="container ">
-        <div className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 overflow-auto pt-5 pb-5">
+        <div className="row row-cols-lg-3 row-cols-md-1 row-cols-sm-1 row-cols-xs-1 g-4 overflow-auto pt-5 pb-5">
           {listingsToDisplay}
         </div>
       </div>

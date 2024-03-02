@@ -3,6 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import { FormLabel, Form, Button } from "react-bootstrap";
 
 function LoginForm({ setCurrentUser }) {
   const [valid, setValid] = useState(true);
@@ -40,6 +41,54 @@ function LoginForm({ setCurrentUser }) {
 
   return (
     <div>
+      <FormLabel htmlFor="loginForm" id="loginLabel">
+        Already have an account? Log In:
+      </FormLabel>
+      {valid ? (
+        <></>
+      ) : (
+        <FormLabel htmlFor="loginForm" id="invalidLogin">
+          Invalid username or password
+        </FormLabel>
+      )}
+      <Form onSubmit={formik.handleSubmit} id="loginForm">
+        <Form.Group>
+          <Form.Control
+            type="text"
+            id="username"
+            placeholder="username"
+            {...formik.getFieldProps("username")}
+          ></Form.Control>
+          {formik.touched.username && formik.errors.username ? (
+            <Form.Text className="validation text-small">
+              {formik.errors.username}
+            </Form.Text>
+          ) : null}
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Control
+            type="text"
+            id="password"
+            placeholder="password"
+            {...formik.getFieldProps("password")}
+          ></Form.Control>
+          {formik.touched.password && formik.errors.password ? (
+            <Form.Text className="validation text-small">
+              {formik.errors.password}
+            </Form.Text>
+          ) : null}
+        </Form.Group>
+
+        <Button type="submit">Log in</Button>
+      </Form>
+    </div>
+  );
+}
+export default LoginForm;
+
+{
+  /* <div>
       <label htmlFor="loginForm" id="loginLabel">
         Already have an account? Log In:
       </label>
@@ -71,7 +120,5 @@ function LoginForm({ setCurrentUser }) {
         ) : null}
         <button type="submit">Log in</button>
       </form>
-    </div>
-  );
+    </div> */
 }
-export default LoginForm;

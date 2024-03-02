@@ -1,3 +1,9 @@
+/* App */
+#root {
+  background-color: #f6f5f3;
+}
+
+/* */
 #logout {
   float: right;
 }
@@ -13,21 +19,8 @@
 .row {
   max-height: 90vh;
 }
-/* .col,
-Card {
-  max-height: 50vh;
-} */
-.card-img {
-  object-fit: cover;
-  width: auto;
-}
-/* .claim #select-claim {
-  display: none;
-}
-.claim:hover #select-claim {
-  display: initial;
-} */
 
+/* Listing */
 .rating:hover i {
   color: #fc0;
   text-shadow: #fc0 0 0 10px;
@@ -43,7 +36,14 @@ Card {
   transition-delay: 0;
   cursor: pointer;
 }
+.card-img {
+  object-fit: cover;
+  width: auto;
+}
 
+/* Your Listings page */
 .validation {
   color: red;
+}
+.createListingForm {
 }
