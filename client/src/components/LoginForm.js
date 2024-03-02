@@ -40,9 +40,9 @@ function LoginForm({ setCurrentUser }) {
   });
 
   return (
-    <div>
+    <div className="loginForm">
       <FormLabel htmlFor="loginForm" id="loginLabel">
-        Already have an account? Log In:
+        Log In:
       </FormLabel>
       {valid ? (
         <></>
@@ -54,6 +54,7 @@ function LoginForm({ setCurrentUser }) {
       <Form onSubmit={formik.handleSubmit} id="loginForm">
         <Form.Group>
           <Form.Control
+            className="form-control-lg"
             type="text"
             id="username"
             placeholder="username"
@@ -63,11 +64,14 @@ function LoginForm({ setCurrentUser }) {
             <Form.Text className="validation text-small">
               {formik.errors.username}
             </Form.Text>
-          ) : null}
+          ) : (
+            <br />
+          )}
         </Form.Group>
 
         <Form.Group>
           <Form.Control
+            className="form-control-lg"
             type="text"
             id="password"
             placeholder="password"
@@ -77,10 +81,14 @@ function LoginForm({ setCurrentUser }) {
             <Form.Text className="validation text-small">
               {formik.errors.password}
             </Form.Text>
-          ) : null}
+          ) : (
+            <br />
+          )}
         </Form.Group>
 
-        <Button type="submit">Log in</Button>
+        <Button type="submit" className="submitBtn">
+          Log in
+        </Button>
       </Form>
     </div>
   );

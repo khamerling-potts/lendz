@@ -1,16 +1,61 @@
 /* App */
 #root {
   background-color: #f6f5f3;
+  font-family: "Sora", sans-serif;
+}
+.page {
+  height: 100%;
 }
 
 /* */
+.loginPage {
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+}
 #logout {
   float: right;
 }
+.loginForms {
+  height: 100%;
+  width: 90%;
+  /* max-width: 80%; */
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+#loginLabel,
+#signupLabel {
+  font-size: xx-large;
+}
+.loginForm,
+.signupForm {
+  background-color: #ddd5de;
+  padding: 2rem;
+  margin: 2rem;
+  border-radius: 25px;
+}
+.form-control-lg {
+  margin-top: 2rem;
+}
+.submitBtn {
+  margin-top: 2rem;
+  background-color: #759501;
+  width: 100%;
+}
 
 #invalidLogin {
-  color: red;
+  color: rgb(152, 19, 19);
+  font-weight: bold;
   display: block;
+}
+#usernameTaken {
+  color: rgb(152, 19, 19);
+  font-weight: bold;
+}
+#usernameAvailable {
+  color: rgb(51, 106, 65);
+  font-weight: bold;
 }
 .container {
   max-height: 90vh;
@@ -43,7 +88,7 @@
 
 /* Your Listings page */
 .validation {
-  color: red;
+  /* color: rgb(78, 17, 17); */
 }
 .createListingForm {
 }

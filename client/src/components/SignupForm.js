@@ -52,11 +52,18 @@ function SignupForm({ currentUser, setCurrentUser }) {
     },
   });
   return (
-    <div>
-      <Form.Label htmlFor="signupForm">Or Sign Up below:</Form.Label>
+    <div className="signupForm">
+      <Form.Label
+        htmlFor="signupForm"
+        id="signupLabel"
+        className="form-label-lg"
+      >
+        Sign Up:
+      </Form.Label>
       <Form onSubmit={formik.handleSubmit} id="signupForm">
         <Form.Group>
           <Form.Control
+            className="form-control-lg"
             type="text"
             id="username"
             placeholder="username"
@@ -74,11 +81,14 @@ function SignupForm({ currentUser, setCurrentUser }) {
           ) : null}
           {!usernameTaken && formik.values.username != "" ? (
             <Form.Text id="usernameAvailable">Username available ✔</Form.Text>
-          ) : null}
+          ) : (
+            <br />
+          )}
         </Form.Group>
 
         <Form.Group>
           <Form.Control
+            className="form-control-lg"
             type="text"
             id="password"
             placeholder="password"
@@ -88,10 +98,14 @@ function SignupForm({ currentUser, setCurrentUser }) {
             <Form.Text className="validation text-small">
               {formik.errors.password}
             </Form.Text>
-          ) : null}
+          ) : (
+            <br />
+          )}
         </Form.Group>
 
-        <Button type="submit">Sign up</Button>
+        <Button type="submit" className="submitBtn">
+          Sign up
+        </Button>
       </Form>
     </div>
   );

@@ -59,7 +59,7 @@ function App() {
   }
 
   return (
-    <div className="page">
+    <>
       <header>
         <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
       </header>
@@ -79,7 +79,7 @@ function App() {
       ) : (
         <Login setCurrentUser={setCurrentUser} />
       )}
-    </div>
+    </>
   );
 }
 
