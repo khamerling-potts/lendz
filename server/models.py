@@ -153,7 +153,9 @@ class Claim(db.Model, SerializerMixin):
         "-user.owned_listings",
         "-user.claims",
         "-user.claimed_listings",
-        "-listing",
+        "-listing.claims",
+        "-listing.claimed_users",
+        "-listing.user",
     )
     # serialize_only = ("id", "comment", "time", "selected")
 

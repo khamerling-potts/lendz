@@ -29,12 +29,16 @@ function App() {
   /* Request all listings from server */
   function requestListings() {
     console.log("browsing listings");
-    fetch("/listings").then((r) => {
-      if (r.ok)
-        r.json().then((listings) => {
-          setListings(listings.sort((a, b) => a.id - b.id));
-        });
-    });
+    return fetch("/listings")
+      .then((r) => {
+        if (r.ok) {
+          return r.json();
+        }
+      })
+      .then((listings) => {
+        setListings(listings.sort((a, b) => a.id - b.id));
+        return listings;
+      });
   }
 
   // Updates listings with the newly edited listing, sorting by id to keep display order consistent

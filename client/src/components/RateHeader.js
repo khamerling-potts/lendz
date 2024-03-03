@@ -1,6 +1,11 @@
 import { Card } from "react-bootstrap";
 
-function RateHeader({ userToRate, requestListings }) {
+function RateHeader({
+  userToRate,
+  listingID,
+  setSelectedListing,
+  requestListings,
+}) {
   function onRating(rating) {
     const configObj = {
       method: "PATCH",
@@ -9,7 +14,13 @@ function RateHeader({ userToRate, requestListings }) {
     };
     fetch(`/users/${userToRate.id}`, configObj).then((r) => {
       if (r.ok) {
-        r.json().then((user) => requestListings());
+        r.json().then((user) => {
+          requestListings().then((listings) =>
+            setSelectedListing(
+              listings.find((listing) => listing.id === listingID)
+            )
+          );
+        });
       }
     });
   }

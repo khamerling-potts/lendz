@@ -3,14 +3,23 @@ import { Popover, OverlayTrigger, Button, Card } from "react-bootstrap";
 import EditListingForm from "./EditListingForm";
 import ClaimsFooter from "./ClaimsFooter";
 import RateHeader from "./RateHeader";
+import { useLocation, useOutletContext } from "react-router-dom";
 
 function Listing({
   listing,
+  setSelectedListing,
   currentUser,
   handleEditListing,
   handleDeleteListing,
   requestListings,
 }) {
+  // const {
+  //   currentUser,
+  //   handleEditListing,
+  //   handleDeleteListing,
+  //   requestListings,
+  // } = useOutletContext();
+  //const [listing, setListing] = useState(useLocation().state.listing);
   const [showPopover, setShowPopover] = useState(false);
 
   let selectedClaim = listing.claims.find((claim) => claim.selected);
@@ -36,9 +45,15 @@ function Listing({
   }
 
   function onDeleteListing() {
-    fetch(`/listings/${listing.id}`, { method: "DELETE" }).then((r) =>
-      handleDeleteListing(listing.id)
-    );
+    fetch(`/listings/${listing.id}`, { method: "DELETE" }).then((r) => {
+      setSelectedListing(null);
+      handleDeleteListing(listing.id);
+    });
+  }
+
+  function handleGoBack() {
+    console.log("going back");
+    setSelectedListing(null);
   }
 
   const editPopover = (
@@ -47,6 +62,7 @@ function Listing({
       <Popover.Body>
         <EditListingForm
           listing={listing}
+          setSelectedListing={setSelectedListing}
           handleEditListing={handleEditListing}
           setShowPopover={setShowPopover}
         ></EditListingForm>
@@ -70,10 +86,14 @@ function Listing({
         {rate ? (
           <RateHeader
             userToRate={userToRate}
+            listingID={listing.id}
+            setSelectedListing={setSelectedListing}
             requestListings={requestListings}
           />
         ) : null}
         <Card.Header>
+          <Button onClick={handleGoBack}>←</Button>
+
           <small>{user.username}</small>
           <span className="badge">{calculateRating(user)}</span>
           {mine ? (
@@ -113,6 +133,7 @@ function Listing({
         </Card.Body>
         <ClaimsFooter
           listing={listing}
+          setSelectedListing={setSelectedListing}
           currentUser={currentUser}
           mine={mine}
           handleEditListing={handleEditListing}

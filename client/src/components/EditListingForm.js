@@ -3,7 +3,12 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Form, Button } from "react-bootstrap";
 
-function EditListingForm({ listing, handleEditListing, setShowPopover }) {
+function EditListingForm({
+  listing,
+  setSelectedListing,
+  handleEditListing,
+  setShowPopover,
+}) {
   const formik = useFormik({
     initialValues: {
       title: listing.title,
@@ -44,6 +49,7 @@ function EditListingForm({ listing, handleEditListing, setShowPopover }) {
       fetch(`/listings/${listing.id}`, configObj).then((r) => {
         if (r.ok) {
           r.json().then((listing) => {
+            setSelectedListing(listing);
             handleEditListing(listing);
             setShowPopover(false);
           });
@@ -51,45 +57,6 @@ function EditListingForm({ listing, handleEditListing, setShowPopover }) {
       });
     },
   });
-
-  // const formik = useFormik({
-  //   initialValues: {
-  //     title: listing.title,
-  //     img_url: listing.img_url,
-  //     description: listing.description,
-  //     zip: listing.zip,
-  //     meeting_place: listing.meeting_place,
-  //   },
-  //   validationScheme: Yup.object({
-  //     title: Yup.string()
-  //       .max(50, "Must be 50 characters or less")
-  //       .required("Title required"),
-  //     description: Yup.string()
-  //       .max(100, "Must be 100 characters or less")
-  //       .required("Description required"),
-  //     zip: Yup.number()
-  //       .integer()
-  //       .positive()
-  //       .typeError("Must be a number")
-  //       .min(10000, "Please enter a 5-digit zip code")
-  //       .max(99999, "Please enter a 5-digit zip code"),
-  //   }),
-  //   onSubmit: (values) => {
-  //     const configObj = {
-  //       method: "PATCH",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify(values, null, 2),
-  //     };
-  //     fetch(`/listings/${listing.id}`, configObj).then((r) => {
-  //       if (r.ok) {
-  //         r.json().then((listing) => {
-  //           handleEditListing(listing);
-  //           setShowPopover(false);
-  //         });
-  //       }
-  //     });
-  //   },
-  // });
 
   return (
     <Form onSubmit={formik.handleSubmit} id="editListingForm">

@@ -73,8 +73,10 @@ class UserByID(Resource):
                     setattr(updated_user, attr, data[attr])
             db.session.add(updated_user)
             db.session.commit()
+            print(updated_user)
             return updated_user.to_dict(), 200
-        except:
+        except Exception as exc:
+            print(exc)
             return {"error": "422 - Unprocessable Entity"}, 422
 
 

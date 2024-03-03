@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import Listing from "../components/Listing";
+import ListingPreview from "../components/ListingPreview";
 
 function Home() {
   //const [listings, setListings] = useState([]);
@@ -13,6 +14,7 @@ function Home() {
     requestListings,
   } = useOutletContext();
 
+  const [selectedListing, setSelectedListing] = useState(null);
   useEffect(() => {
     requestListings();
   }, []);
@@ -39,9 +41,10 @@ function Home() {
   // }
 
   const listingsToDisplay = listings.map((listing) => (
-    <Listing
+    <ListingPreview
       key={listing.id}
       listing={listing}
+      setSelectedListing={setSelectedListing}
       currentUser={currentUser}
       handleEditListing={handleEditListing}
       handleDeleteListing={handleDeleteListing}
@@ -66,9 +69,20 @@ function Home() {
     <>
       <h1>Home</h1>
       <div className="container ">
-        <div className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 overflow-auto pt-5 pb-5">
-          {listingsToDisplay}
-        </div>
+        {selectedListing ? (
+          <Listing
+            listing={selectedListing}
+            setSelectedListing={setSelectedListing}
+            currentUser={currentUser}
+            handleEditListing={handleEditListing}
+            handleDeleteListing={handleDeleteListing}
+            requestListings={requestListings}
+          />
+        ) : (
+          <div className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 overflow-auto pt-5 pb-5">
+            {listingsToDisplay}
+          </div>
+        )}
       </div>
     </>
   );

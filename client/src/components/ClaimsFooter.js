@@ -5,6 +5,7 @@ import * as Yup from "yup";
 
 function ClaimsFooter({
   listing,
+  setSelectedListing,
   currentUser,
   mine,
   handleEditListing,
@@ -34,7 +35,10 @@ function ClaimsFooter({
       };
       fetch("/claims", configObj).then((r) => {
         if (r.ok) {
-          r.json().then((listing) => handleEditListing(listing));
+          r.json().then((listing) => {
+            setSelectedListing(listing);
+            handleEditListing(listing);
+          });
         } else {
           console.log(r);
         }
