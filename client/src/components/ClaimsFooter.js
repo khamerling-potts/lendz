@@ -11,16 +11,18 @@ function ClaimsFooter({
   handleEditListing,
   calculateRating,
 }) {
-  const claims = listing.claims.map((claim) => (
-    <Claim
-      key={claim.id}
-      claim={claim}
-      mine={mine}
-      handleEditListing={handleEditListing}
-      calculateRating={calculateRating}
-    ></Claim>
-  ));
-  claims.sort((a, b) => a.id - b.id);
+  const claims = listing.claims
+    .sort((a, b) => a.id - b.id)
+    .map((claim) => (
+      <Claim
+        key={claim.id}
+        claim={claim}
+        mine={mine}
+        setSelectedListing={setSelectedListing}
+        handleEditListing={handleEditListing}
+        calculateRating={calculateRating}
+      ></Claim>
+    ));
 
   const formik = useFormik({
     initialValues: { comment: "" },

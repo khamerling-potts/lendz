@@ -8,13 +8,14 @@ function Home() {
   const {
     currentUser,
     listings,
+    selectedListing,
+    setSelectedListing,
     //updateListings,
     handleEditListing,
     handleDeleteListing,
     requestListings,
   } = useOutletContext();
 
-  const [selectedListing, setSelectedListing] = useState(null);
   useEffect(() => {
     requestListings();
   }, []);

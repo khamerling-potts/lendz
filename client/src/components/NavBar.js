@@ -1,11 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-function NavBar({ currentUser, setCurrentUser }) {
+function NavBar({ currentUser, setCurrentUser, setSelectedListing }) {
   const navigate = useNavigate();
   function handleLogout(e) {
     fetch("/logout", { method: "DELETE" }).then((r) => {
       if (r.ok) {
         setCurrentUser(null);
+        setSelectedListing(null);
         // navigate("/login");
       }
     });
@@ -16,13 +17,25 @@ function NavBar({ currentUser, setCurrentUser }) {
         <div className="container-fluid">
           <div className="collapse navbar-collapse">
             <div className="navbar-nav">
-              <NavLink to="/" className="nav-link">
+              <NavLink
+                to="/"
+                onClick={(e) => setSelectedListing(null)}
+                className="nav-link"
+              >
                 Home
               </NavLink>
-              <NavLink to="/yourclaims" className="nav-link">
+              <NavLink
+                to="/yourclaims"
+                onClick={(e) => setSelectedListing(null)}
+                className="nav-link"
+              >
                 Your Claims
               </NavLink>
-              <NavLink to="/yourlistings" className="nav-link">
+              <NavLink
+                to="/yourlistings"
+                onClick={(e) => setSelectedListing(null)}
+                className="nav-link"
+              >
                 Your Listings
               </NavLink>
             </div>

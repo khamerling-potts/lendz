@@ -7,6 +7,8 @@ import Login from "./pages/Login";
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [listings, setListings] = useState([]);
+  const [selectedListing, setSelectedListing] = useState(null);
+
   const navigate = useNavigate();
 
   // Automatically checks login when app loads
@@ -29,16 +31,14 @@ function App() {
   /* Request all listings from server */
   function requestListings() {
     console.log("browsing listings");
-    return fetch("/listings")
-      .then((r) => {
-        if (r.ok) {
-          return r.json();
-        }
-      })
-      .then((listings) => {
-        setListings(listings.sort((a, b) => a.id - b.id));
-        return listings;
-      });
+    return fetch("/listings").then((r) => {
+      if (r.ok) {
+        return r.json().then((listings) => {
+          setListings(listings.sort((a, b) => a.id - b.id));
+          return listings;
+        });
+      }
+    });
   }
 
   // Updates listings with the newly edited listing, sorting by id to keep display order consistent
@@ -65,7 +65,11 @@ function App() {
   return (
     <>
       <header>
-        <NavBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
+        <NavBar
+          currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
+          setSelectedListing={setSelectedListing}
+        />
       </header>
       {currentUser ? (
         <Outlet
@@ -73,6 +77,8 @@ function App() {
             currentUser,
             setCurrentUser,
             //updateListings,
+            selectedListing,
+            setSelectedListing,
             listings,
             handleEditListing,
             handleDeleteListing,

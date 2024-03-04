@@ -3,7 +3,7 @@ import { ErrorMessage, Formik, useFormik } from "formik";
 import * as Yup from "yup";
 import { Form, Button } from "react-bootstrap";
 
-function CreateListingForm({ handleCreateListing }) {
+function CreateListingForm({ handleCreateListing, setSelectedListing }) {
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -45,6 +45,7 @@ function CreateListingForm({ handleCreateListing }) {
         if (r.ok) {
           r.json().then((listing) => {
             handleCreateListing(listing);
+            setSelectedListing(null);
           });
         }
       });

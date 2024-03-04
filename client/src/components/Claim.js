@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { ListGroup, Row, Col, Button } from "react-bootstrap";
 
-function Claim({ listing, claim, mine, handleEditListing, calculateRating }) {
+function Claim({
+  listing,
+  setSelectedListing,
+  claim,
+  mine,
+  handleEditListing,
+  calculateRating,
+  setSelectedlisting,
+}) {
   const [hover, setHover] = useState(false);
   const ratings = claim.user.ratings;
 
@@ -14,6 +22,7 @@ function Claim({ listing, claim, mine, handleEditListing, calculateRating }) {
     fetch(`/claims/${claim.id}`, configObj).then((r) => {
       if (r.ok) {
         r.json().then((listing) => {
+          setSelectedListing(listing);
           handleEditListing(listing);
         });
       }

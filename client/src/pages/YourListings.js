@@ -3,6 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import Listing from "../components/Listing";
 import CreateListingForm from "../components/CreateListingForm";
 import { Button } from "react-bootstrap";
+import ListingPreview from "../components/ListingPreview";
 
 function YourListings() {
   //const [yourListings, setYourListings] = useState([]);
@@ -11,6 +12,8 @@ function YourListings() {
     currentUser,
     //updateListings,
     listings,
+    selectedListing,
+    setSelectedListing,
     handleEditListing,
     handleDeleteListing,
     handleCreateListing,
@@ -35,9 +38,10 @@ function YourListings() {
   // }
 
   const listingsToDisplay = yourListings.map((listing) => (
-    <Listing
+    <ListingPreview
       key={listing.id}
       listing={listing}
+      setSelectedListing={setSelectedListing}
       currentUser={currentUser}
       handleEditListing={handleEditListing}
       handleDeleteListing={handleDeleteListing}
@@ -61,9 +65,20 @@ function YourListings() {
       </div>
 
       <div className="container ">
-        <div className="row row-cols-lg-3 row-cols-md-1 row-cols-sm-1 row-cols-xs-1 g-4 overflow-auto pt-5 pb-5">
-          {listingsToDisplay}
-        </div>
+        {selectedListing ? (
+          <Listing
+            listing={selectedListing}
+            setSelectedListing={setSelectedListing}
+            currentUser={currentUser}
+            handleEditListing={handleEditListing}
+            handleDeleteListing={handleDeleteListing}
+            requestListings={requestListings}
+          />
+        ) : (
+          <div className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 overflow-auto pt-5 pb-5">
+            {listingsToDisplay}
+          </div>
+        )}
       </div>
     </div>
   );

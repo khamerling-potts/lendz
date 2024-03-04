@@ -9,10 +9,10 @@ import { Outlet, useNavigate, useLocation } from "react-router-dom";
 function ListingPreview({
   listing,
   setSelectedListing,
-  currentUser,
-  handleEditListing,
-  handleDeleteListing,
-  requestListings,
+  //   currentUser,
+  //   handleEditListing,
+  //   handleDeleteListing,
+  //   requestListings,
 }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
