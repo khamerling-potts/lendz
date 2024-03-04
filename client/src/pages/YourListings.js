@@ -50,37 +50,42 @@ function YourListings() {
   ));
 
   return (
+    // <div className="page">
     <div className="page">
       <h1>Your Listings</h1>
       <Button
         data-bs-toggle="collapse"
-        data-bs-target="#createListingForm"
+        data-bs-target="#create-listing-form"
         aria-expanded="false"
-        aria-controls="createListingForm"
+        aria-controls="create-listing-form"
       >
         Create Listing
       </Button>
-      <div className="collapse" id="createListingForm">
-        <CreateListingForm handleCreateListing={handleCreateListing} />
+      <div className="collapse" id="create-listing-form">
+        <div className="create-listing-container">
+          <CreateListingForm
+            handleCreateListing={handleCreateListing}
+            setSelectedListing={setSelectedListing}
+          />
+        </div>
       </div>
 
-      <div className="container ">
-        {selectedListing ? (
-          <Listing
-            listing={selectedListing}
-            setSelectedListing={setSelectedListing}
-            currentUser={currentUser}
-            handleEditListing={handleEditListing}
-            handleDeleteListing={handleDeleteListing}
-            requestListings={requestListings}
-          />
-        ) : (
-          <div className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 overflow-auto pt-5 pb-5">
-            {listingsToDisplay}
-          </div>
-        )}
-      </div>
+      {selectedListing ? (
+        <Listing
+          listing={selectedListing}
+          setSelectedListing={setSelectedListing}
+          currentUser={currentUser}
+          handleEditListing={handleEditListing}
+          handleDeleteListing={handleDeleteListing}
+          requestListings={requestListings}
+        />
+      ) : (
+        <div className="preview-row row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
+          {listingsToDisplay}
+        </div>
+      )}
     </div>
+    // </div>
   );
 }
 

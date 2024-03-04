@@ -13,7 +13,7 @@ function NavBar({ currentUser, setCurrentUser, setSelectedListing }) {
   }
   if (currentUser) {
     return (
-      <nav className="navbar navbar-expand-sm bg-body-tertiary">
+      <nav className="navbar navbar-expand-sm sticky-top bg-body-tertiary">
         <div className="container-fluid">
           <div className="collapse navbar-collapse">
             <div className="navbar-nav">

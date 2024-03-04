@@ -67,7 +67,7 @@ function Home() {
   //   setListings(updatedListings);
   // }
   return (
-    <>
+    <div className="page">
       <h1>Home</h1>
       <div className="container ">
         {selectedListing ? (
@@ -85,7 +85,7 @@ function Home() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
 export default Home;

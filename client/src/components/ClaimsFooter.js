@@ -51,9 +51,7 @@ function ClaimsFooter({
   return (
     <Card.Footer>
       <label htmlFor="claims">Claims</label>
-      <ListGroup className="overflow-auto" id="claims">
-        {claims}
-      </ListGroup>
+      <ListGroup id="claims">{claims}</ListGroup>
       {mine ? null : (
         <Form onSubmit={formik.handleSubmit}>
           <InputGroup>

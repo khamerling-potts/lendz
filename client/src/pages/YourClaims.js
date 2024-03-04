@@ -30,8 +30,9 @@ function YourClaims() {
 
   return (
     <div className="page">
-      <h1>Your Claimed Listings</h1>
       <div className="container ">
+        <h1>Your Claimed Listings</h1>
+
         {selectedListing ? (
           <Listing
             listing={selectedListing}

@@ -4,10 +4,30 @@
   font-family: "Sora", sans-serif;
 }
 .page {
-  height: 100%;
+  max-width: 95vw;
+  height: calc(100% - 56px);
+  border: 2px solid red;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  margin: auto;
+  justify-content: center;
+}
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.row {
+  display: flex;
+  overflow: auto;
+  min-width: 95%;
+  max-width: 100%;
+  border: 2px solid green;
+  margin: auto;
 }
 
-/* */
+/* Login page */
 .loginPage {
   height: 100%;
   display: flex;
@@ -61,11 +81,16 @@
   max-height: 90vh;
   max-width: 90%;
 }
-.row {
+/* .row {
   max-height: 90vh;
-}
+} */
 
 /* Listing */
+/* .listing-div {
+  max-width: 100%;
+  overflow-y: auto;
+  border: 2px solid blue;
+} */
 .rating:hover i {
   color: #fc0;
   text-shadow: #fc0 0 0 10px;
@@ -94,5 +119,11 @@
 .validation {
   /* color: rgb(78, 17, 17); */
 }
-.createListingForm {
+.container {
+  height: calc(100vh-70);
+}
+.create-listing-container {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
 }

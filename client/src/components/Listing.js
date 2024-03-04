@@ -81,66 +81,83 @@ function Listing({
     </Popover>
   );
   return (
-    <div className="col">
-      <Card className="h-100">
-        {rate ? (
-          <RateHeader
-            userToRate={userToRate}
-            listingID={listing.id}
-            setSelectedListing={setSelectedListing}
-            requestListings={requestListings}
-          />
-        ) : null}
-        <Card.Header>
-          <Button onClick={handleGoBack}>←</Button>
+    // <div className="listing-div">
+    <Card className="h-100 listing-card">
+      <div className="row listing-row">
+        <div className="listing-col col-md-6">
+          <Card.Header>
+            <Button onClick={handleGoBack}>←</Button>
 
-          <small>{user.username}</small>
-          <span className="badge">{calculateRating(user)}</span>
-          {mine ? (
-            <>
-              <OverlayTrigger
-                show={showPopover}
-                trigger="click"
-                placement="right"
-                overlay={editPopover}
-              >
-                <Button
-                  onClick={(e) => setShowPopover((showPopover) => !showPopover)}
+            <small>{user.username}</small>
+            <span className="badge">{calculateRating(user)}</span>
+            {mine ? (
+              <>
+                <OverlayTrigger
+                  show={showPopover}
+                  trigger="click"
+                  placement="right"
+                  overlay={editPopover}
                 >
-                  Edit
-                </Button>
-              </OverlayTrigger>
-              <OverlayTrigger
-                trigger="click"
-                placement="right"
-                overlay={deletePopover}
-              >
-                <Button>Delete</Button>
-              </OverlayTrigger>
-            </>
+                  <Button
+                    onClick={(e) =>
+                      setShowPopover((showPopover) => !showPopover)
+                    }
+                  >
+                    Edit
+                  </Button>
+                </OverlayTrigger>
+                <OverlayTrigger
+                  trigger="click"
+                  placement="right"
+                  overlay={deletePopover}
+                >
+                  <Button>Delete</Button>
+                </OverlayTrigger>
+              </>
+            ) : null}
+          </Card.Header>
+          <Card.Body>
+            <Card.Title>{listing.title}</Card.Title>
+            <Card.Img src={listing.img_url} className="card-img img-fluid" />
+            <Card.Text>{listing.description}</Card.Text>
+            <div className="d-flex justify-content-between">
+              <Card.Subtitle>{listing.zip}</Card.Subtitle>
+              <Card.Subtitle className="card-subtitle">
+                {listing.meeting_place}
+              </Card.Subtitle>
+            </div>
+          </Card.Body>
+        </div>
+        <div className="claims-col col-md-6">
+          {rate ? (
+            <RateHeader
+              userToRate={userToRate}
+              listingID={listing.id}
+              setSelectedListing={setSelectedListing}
+              requestListings={requestListings}
+            />
           ) : null}
-        </Card.Header>
-        <Card.Body>
-          <Card.Title>{listing.title}</Card.Title>
-          <Card.Img src={listing.img_url} className="card-img img-fluid" />
-          <Card.Text>{listing.description}</Card.Text>
-          <div className="d-flex justify-content-between">
-            <Card.Subtitle>{listing.zip}</Card.Subtitle>
-            <Card.Subtitle className="card-subtitle">
-              {listing.meeting_place}
-            </Card.Subtitle>
-          </div>
-        </Card.Body>
-        <ClaimsFooter
-          listing={listing}
-          setSelectedListing={setSelectedListing}
-          currentUser={currentUser}
-          mine={mine}
-          handleEditListing={handleEditListing}
-          calculateRating={calculateRating}
-        />
-      </Card>
-    </div>
+          <ClaimsFooter
+            listing={listing}
+            setSelectedListing={setSelectedListing}
+            currentUser={currentUser}
+            mine={mine}
+            handleEditListing={handleEditListing}
+            calculateRating={calculateRating}
+          >
+            {rate ? (
+              <RateHeader
+                userToRate={userToRate}
+                listingID={listing.id}
+                setSelectedListing={setSelectedListing}
+                requestListings={requestListings}
+              />
+            ) : null}
+          </ClaimsFooter>
+        </div>
+      </div>
+    </Card>
+    // </div>
   );
 }
 

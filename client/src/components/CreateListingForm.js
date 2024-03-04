@@ -54,7 +54,7 @@ function CreateListingForm({ handleCreateListing, setSelectedListing }) {
   });
 
   return (
-    <div className="container createListingForm col-lg-6 col-sm-12">
+    <div className=" createListingForm col-lg-6 col-sm-12">
       <Form
         onSubmit={formik.handleSubmit}
         className="row g-3"
