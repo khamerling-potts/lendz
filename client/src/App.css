@@ -3,10 +3,11 @@
   background-color: #f6f5f3;
   font-family: "Sora", sans-serif;
 }
+
 .page {
   max-width: 95vw;
-  height: calc(100% - 56px);
-  border: 2px solid red;
+  height: calc(100% - 112px);
+  /* border: 2px solid red; */
   display: flex;
   flex-direction: column;
   overflow: auto;
@@ -18,12 +19,12 @@ header {
   top: 0;
   z-index: 100;
 }
-.row {
+.preview-row {
   display: flex;
   overflow: auto;
   min-width: 95%;
   max-width: 100%;
-  border: 2px solid green;
+  /* border: 2px solid green; */
   margin: auto;
 }
 
@@ -119,11 +120,21 @@ header {
 .validation {
   /* color: rgb(78, 17, 17); */
 }
-.container {
+/* .container {
   height: calc(100vh-70);
-}
+} */
 .create-listing-container {
   margin-bottom: 2rem;
   display: flex;
   justify-content: center;
+}
+.empty {
+  display: flex;
+  justify-content: center;
+  font-size: xx-large;
+  min-width: 95%;
+  max-width: 100%;
+  /* border: 2px solid green; */
+  margin-top: 4rem;
+  margin-bottom: auto;
 }

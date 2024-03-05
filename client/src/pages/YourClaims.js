@@ -30,24 +30,29 @@ function YourClaims() {
 
   return (
     <div className="page">
-      <div className="container ">
-        <h1>Your Claimed Listings</h1>
+      {/* <div className="container "> */}
+      <h1>Your Claimed Listings</h1>
 
-        {selectedListing ? (
-          <Listing
-            listing={selectedListing}
-            setSelectedListing={setSelectedListing}
-            currentUser={currentUser}
-            handleEditListing={handleEditListing}
-            // handleDeleteListing={handleDeleteListing}
-            requestListings={requestListings}
-          />
-        ) : (
-          <div className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 overflow-auto pt-5 pb-5">
-            {listingsToDisplay}
-          </div>
-        )}
-      </div>
+      {selectedListing ? (
+        <Listing
+          listing={selectedListing}
+          setSelectedListing={setSelectedListing}
+          currentUser={currentUser}
+          handleEditListing={handleEditListing}
+          // handleDeleteListing={handleDeleteListing}
+          requestListings={requestListings}
+        />
+      ) : listingsToDisplay.length ? (
+        <div className="preview-row row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
+          {listingsToDisplay}
+        </div>
+      ) : (
+        <div className="empty">
+          You have not claimed any listings. Browse available listings in your
+          Home feed!
+        </div>
+      )}
+      {/* </div> */}
     </div>
   );
 }

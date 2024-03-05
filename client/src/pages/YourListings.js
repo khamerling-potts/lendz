@@ -79,9 +79,13 @@ function YourListings() {
           handleDeleteListing={handleDeleteListing}
           requestListings={requestListings}
         />
-      ) : (
+      ) : listingsToDisplay.length ? (
         <div className="preview-row row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
           {listingsToDisplay}
+        </div>
+      ) : (
+        <div className="empty">
+          You have not created any listings. Create one above?
         </div>
       )}
     </div>

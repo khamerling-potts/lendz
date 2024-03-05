@@ -69,22 +69,22 @@ function Home() {
   return (
     <div className="page">
       <h1>Home</h1>
-      <div className="container ">
-        {selectedListing ? (
-          <Listing
-            listing={selectedListing}
-            setSelectedListing={setSelectedListing}
-            currentUser={currentUser}
-            handleEditListing={handleEditListing}
-            handleDeleteListing={handleDeleteListing}
-            requestListings={requestListings}
-          />
-        ) : (
-          <div className="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4 overflow-auto pt-5 pb-5">
-            {listingsToDisplay}
-          </div>
-        )}
-      </div>
+      {/* <div className="container "> */}
+      {selectedListing ? (
+        <Listing
+          listing={selectedListing}
+          setSelectedListing={setSelectedListing}
+          currentUser={currentUser}
+          handleEditListing={handleEditListing}
+          handleDeleteListing={handleDeleteListing}
+          requestListings={requestListings}
+        />
+      ) : (
+        <div className="preview-row row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
+          {listingsToDisplay}
+        </div>
+      )}
+      {/* </div> */}
     </div>
   );
 }
