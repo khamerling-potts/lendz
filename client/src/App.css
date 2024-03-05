@@ -27,6 +27,18 @@ header {
   /* border: 2px solid green; */
   margin: auto;
 }
+.logo {
+  height: auto;
+  float: left;
+  padding-left: 2%;
+  margin: 0 auto;
+  padding: 10px 0;
+}
+.logo img {
+  width: 75px;
+
+  object-fit: cover;
+}
 
 /* Login page */
 .loginPage {

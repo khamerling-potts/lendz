@@ -17,7 +17,7 @@ function NavBar({ currentUser, setCurrentUser, setSelectedListing }) {
       <>
         <nav className="navbar navbar-expand-sm sticky-top bg-body-tertiary">
           <div className="logo">
-            <img src="./lendzlogo.png" />
+            <img src="./lendzlogo.png" id="logo" />
           </div>
           <div className="container-fluid justify-content-end">
             <span>Hi, {currentUser.username}</span>
