@@ -17,7 +17,7 @@ function NavBar({ currentUser, setCurrentUser, setSelectedListing }) {
       <>
         <nav className="navbar navbar-expand-sm sticky-top bg-body-tertiary">
           <div className="logo">
-            <img src="/Users/kyrahamerling-potts/Development/code/phase-4/lendz/client/src/components/Screenshot 2024-03-05 at 10.33.11 AM-Photoroom.png-Photoroom.png" />
+            <img src="./lendzlogo.png" />
           </div>
           <div className="container-fluid justify-content-end">
             <span>Hi, {currentUser.username}</span>
