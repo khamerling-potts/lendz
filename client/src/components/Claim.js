@@ -31,19 +31,18 @@ function Claim({
 
   return (
     <ListGroup.Item
-      className={
-        claim.selected
-          ? "claim bg-info bg-opacity-10 border border-info rounded-end"
-          : "claim"
-      }
+      className={claim.selected ? "claim selected" : "claim not-selected"}
       onMouseOver={(e) => setHover(true)}
       onMouseLeave={(e) => setHover(false)}
     >
       <Row>
-        <Col xs={2} className="claim-info">
-          {claim.user.username}
-          <br />
-          {calculateRating(claim.user)}
+        <Col xs={2} className="claim-info claim-user">
+          <div>
+            <span className="claim-user">{claim.user.username} </span>
+            <span className="user-rating badge">
+              {calculateRating(claim.user)} <i className="fa-solid fa-star"></i>
+            </span>
+          </div>
         </Col>
         <Col xs={6} className="claim-info">
           {claim.comment}
@@ -51,7 +50,7 @@ function Claim({
         <Col xs={4} className="claim-info">
           {claim.time}
           {hover && mine && !claim.selected ? (
-            <Button id="select-claim>" onClick={onSelectClaim}>
+            <Button className="select-claim-btn" onClick={onSelectClaim}>
               Select
             </Button>
           ) : null}

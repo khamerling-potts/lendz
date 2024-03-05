@@ -64,8 +64,12 @@ function ClaimsCard({
                 placeholder="Add a claim..."
                 {...formik.getFieldProps("comment")}
               />
-              <InputGroup.Text>
-                <Button type="submit" onSubmit={formik.handleSubmit}>
+              <InputGroup.Text className="add-claim-addon">
+                <Button
+                  type="submit"
+                  className="add-claim-btn"
+                  onSubmit={formik.handleSubmit}
+                >
                   +Add
                 </Button>
               </InputGroup.Text>

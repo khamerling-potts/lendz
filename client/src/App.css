@@ -3,7 +3,11 @@
   /* background-color: #f6f5f3; */
   font-family: "Sora", sans-serif;
 }
-
+h1 {
+  margin-top: 2rem;
+  color: #005025;
+  text-align: center;
+}
 .page {
   max-width: 95vw;
   height: calc(100% - 112px);
@@ -18,6 +22,20 @@ header {
   position: sticky;
   top: 0;
   z-index: 100;
+}
+.create-listing-btn {
+  margin-top: 2rem;
+  background-color: #7c677f;
+  border: none;
+  margin-right: auto;
+}
+.post-listing-btn {
+  background-color: #7c677f;
+  border: none;
+}
+.create-listing-btn:hover,
+.post-listing-btn:hover {
+  background-color: #8076a3;
 }
 .preview-row {
   display: flex;
@@ -106,16 +124,41 @@ header {
   border: none;
 }
 
-.listing-card {
+.listing-row {
+  margin-top: 2rem;
+}
+.card .card-header {
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  background-color: #7c677f;
+  border-radius: 0;
+  color: white;
+}
+/* .claims-card .card-header {
+  border-left: 1px solid white;
+}
+.listing-card .card-header {
+  border-right: 1px solid white;
+} */
+.listing-card,
+.claims-card {
   width: 90%;
-  margin: auto;
+  border-color: #7c677f;
+  border-radius: 0;
 }
-.listing-col {
-  padding-right: 0;
+.listing-card {
+  margin-left: auto;
 }
+.claims-card {
+  margin-right: auto;
+}
+
+.listing-col,
 .claims-col {
-  padding-left: 0;
+  padding: 0;
 }
+
 .listing-col .card-body {
   display: flex;
   flex-direction: column;
@@ -126,6 +169,8 @@ header {
   width: 70%;
   margin-right: auto;
   margin-left: auto;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 .goback,
 .edit,
@@ -150,26 +195,48 @@ header {
 .edit-delete-div {
   margin-left: auto;
 }
+.card-title {
+  text-align: center;
+}
+.card-text {
+  text-align: center;
+  padding-top: 2rem;
+}
 
-.owner-rating {
+.user-rating {
+  padding-left: 0;
+}
+.owner-rating,
+.user-rating {
   color: black;
 }
-.owner-rating .fa-star {
+
+.owner-rating .fa-star,
+.user-rating .fa-star {
   color: #fc0;
 }
 .claim-info {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
+  justify-content: center;
 }
-
-/* .listing-col .card-header {
-  display: flex;
-  justify-content: space-between;
-} */
-.card-header {
-  height: 3rem;
-  display: flex;
-  align-items: center;
+#claims .selected {
+  border: 2px solid #005025;
+  background-color: rgba(185, 221, 52, 0.546);
+}
+.add-claim-addon {
+  padding: 0;
+}
+.add-claim-btn {
+  background-color: #759501;
+  width: 100%;
+  height: 100%;
+}
+.select-claim-btn,
+.select-claim-btn:hover {
+  background-color: #759501;
+  height: 100%;
+  border: none;
 }
 
 /* Login page */
@@ -205,6 +272,7 @@ header {
   margin-top: 2rem;
   background-color: #759501;
   width: 100%;
+  border: none;
 }
 
 #invalidLogin {

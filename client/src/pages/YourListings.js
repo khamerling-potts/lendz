@@ -52,8 +52,8 @@ function YourListings() {
   return (
     // <div className="page">
     <div className="page">
-      <h1>Your Listings</h1>
       <Button
+        className="create-listing-btn"
         data-bs-toggle="collapse"
         data-bs-target="#create-listing-form"
         aria-expanded="false"
@@ -80,9 +80,12 @@ function YourListings() {
           requestListings={requestListings}
         />
       ) : listingsToDisplay.length ? (
-        <div className="preview-row row row-cols-lg-4 row-cols-md-2 row-cols-sm-1 g-4">
-          {listingsToDisplay}
-        </div>
+        <>
+          <h1>Your Listings</h1>
+          <div className="preview-row row row-cols-lg-4 row-cols-md-2 row-cols-sm-1 g-4">
+            {listingsToDisplay}
+          </div>
+        </>
       ) : (
         <div className="empty">
           You have not created any listings. Create one above?

@@ -68,7 +68,6 @@ function Home() {
   // }
   return (
     <div className="page">
-      <h1>Home</h1>
       {/* <div className="container "> */}
       {selectedListing ? (
         <Listing
@@ -80,9 +79,12 @@ function Home() {
           requestListings={requestListings}
         />
       ) : (
-        <div className="preview-row row row-cols-lg-4 row-cols-md-2 row-cols-sm-1 g-4">
-          {listingsToDisplay}
-        </div>
+        <>
+          <h1>Browse Listings</h1>
+          <div className="preview-row row row-cols-lg-4 row-cols-md-2 row-cols-sm-1 g-4">
+            {listingsToDisplay}
+          </div>
+        </>
       )}
       {/* </div> */}
     </div>

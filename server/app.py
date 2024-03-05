@@ -47,13 +47,14 @@ class Users(Resource):
         data = request.get_json()
         [username, password] = [data.get("username"), data.get("password")]
         try:
-            new_user = User(username=username, rating=None)
+            new_user = User(username=username, ratings=None)
             new_user.password_hash = password
             db.session.add(new_user)
             db.session.commit()
             session["user_id"] = new_user.id
             return new_user.to_dict(), 201
-        except:
+        except Exception as exc:
+            print(exc)
             return {"error": "422 - Unprocessable Entity"}, 422
 
 

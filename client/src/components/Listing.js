@@ -88,7 +88,7 @@ function Listing({
         <Card className="h-100 listing-card">
           <Card.Header>
             <span className="goback" onClick={handleGoBack}>
-              <i class="fa-solid fa-left-long"></i>
+              <i className="fa-solid fa-left-long"></i>
             </span>
 
             {mine ? (
@@ -105,7 +105,7 @@ function Listing({
                       setShowPopover((showPopover) => !showPopover)
                     }
                   >
-                    <i class="fa-regular fa-pen-to-square"></i>
+                    <i className="fa-regular fa-pen-to-square"></i>
                   </span>
                 </OverlayTrigger>
                 <OverlayTrigger
@@ -114,7 +114,7 @@ function Listing({
                   overlay={deletePopover}
                 >
                   <span className="delete">
-                    <i class="fa-regular fa-trash-can"></i>
+                    <i className="fa-regular fa-trash-can"></i>
                   </span>
                 </OverlayTrigger>
               </div>
@@ -129,19 +129,20 @@ function Listing({
             </span>
             <Card.Title>{listing.title}</Card.Title>
             <Card.Img src={listing.img_url} className="card-img" />
-            <Card.Text>{listing.description}</Card.Text>
-            <div className="d-flex justify-content-between">
+
+            <div className="d-flex justify-content-between border-bottom">
               <Card.Subtitle>{listing.zip}</Card.Subtitle>
               <Card.Subtitle className="card-subtitle">
-                {listing.meeting_place}
+                Meeting place: {listing.meeting_place}
               </Card.Subtitle>
             </div>
+            <Card.Text>Description: {listing.description}</Card.Text>
           </Card.Body>
         </Card>
       </div>
       <div className="claims-col col-md-6">
         {/* <Card.Body> */}
-        <Card className="h-100">
+        <Card className="h-100 claims-card">
           {rate ? (
             <RateHeader
               userToRate={userToRate}

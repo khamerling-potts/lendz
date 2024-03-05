@@ -130,7 +130,9 @@ function CreateListingForm({ handleCreateListing, setSelectedListing }) {
           ) : null}
         </Form.Group>
 
-        <Button type="submit">Create Listing</Button>
+        <Button type="submit" className="post-listing-btn">
+          Post
+        </Button>
       </Form>
 
       {/* <form onSubmit={formik.handleSubmit} id="createListingForm">
