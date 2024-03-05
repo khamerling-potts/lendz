@@ -1,6 +1,6 @@
 /* App */
 #root {
-  background-color: #f6f5f3;
+  /* background-color: #f6f5f3; */
   font-family: "Sora", sans-serif;
 }
 
@@ -12,7 +12,7 @@
   flex-direction: column;
   overflow: auto;
   margin: auto;
-  justify-content: center;
+  justify-items: center;
 }
 header {
   position: sticky;
@@ -24,20 +24,111 @@ header {
   overflow: auto;
   min-width: 95%;
   max-width: 100%;
+  margin: auto;
   /* border: 2px solid green; */
+}
+.col {
+  display: flex;
+  justify-content: center;
+}
+#logo {
+  height: 56px;
+}
+.top-nav {
+  padding-bottom: 0;
+}
+.bottom-nav {
+  padding-top: 0;
+  background-color: transparent;
+  background: transparent;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 3px 3px 0px rgba(0, 0, 0, 0.2);
+}
+.navbar-collapse {
+  display: flex;
+  justify-content: center;
+}
+.navbar-nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+.nav-link {
+  border-radius: 25px;
+  width: 15%;
+  text-align: center;
+}
+.nav-link:hover,
+.active {
+  background-color: #f9c5bd;
+  border-radius: 25px;
+  transition: 0.6s;
+}
+.greeting {
+  padding-right: 2rem;
+  color: #051e2d;
+}
+#logout {
+  border-radius: 25px;
+  border-color: transparent;
+  background-color: #ffffff;
+  float: right;
+  height: 56px;
+}
+#logout:hover {
+  background-color: #005025;
+  color: #ffffff;
+  transition: 0.6s;
+}
+.preview-row .card {
+  border: transparent;
+  border-radius: 10px;
+  width: 90%;
+  transition: 0.6s;
+}
+.preview-row .card:hover,
+.preview-row .card img:hover {
+  border-radius: 35px;
+  transition: 0.6s;
+}
+.preview-row .card img {
+  border: 3px solid #759501;
+  border-radius: 10px;
+  transition: 0.6s;
+}
+.preview-row .card img:hover {
+  border-radius: 35px;
+  transition: 0.6s;
+}
+.preview-row .card-footer {
+  background-color: transparent;
+  border: none;
+}
+
+.listing-card {
+  width: 90%;
   margin: auto;
 }
-.logo {
-  height: auto;
-  float: left;
-  padding-left: 2%;
-  margin: 0 auto;
-  padding: 10px 0;
+.listing-col .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.logo img {
-  width: 75px;
-
-  object-fit: cover;
+.listing-row .card-img {
+  aspect-ratio: 1/1;
+  width: 70%;
+  margin-right: auto;
+  margin-left: auto;
+}
+.goback,
+.edit,
+.delete {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.listing-col .card-header {
+  display: flex;
+  justify-content: space-between;
 }
 
 /* Login page */
@@ -46,9 +137,7 @@ header {
   display: flex;
   justify-content: space-around;
 }
-#logout {
-  float: right;
-}
+
 .loginForms {
   height: 100%;
   width: 90%;

@@ -49,8 +49,8 @@ function ClaimsFooter({
     },
   });
   return (
-    <Card.Footer>
-      <label htmlFor="claims">Claims</label>
+    <Card.Header>
+      Claims
       <ListGroup id="claims">{claims}</ListGroup>
       {mine ? null : (
         <Form onSubmit={formik.handleSubmit}>
@@ -68,7 +68,7 @@ function ClaimsFooter({
           </InputGroup>
         </Form>
       )}
-    </Card.Footer>
+    </Card.Header>
   );
 }
 

@@ -80,7 +80,7 @@ function Home() {
           requestListings={requestListings}
         />
       ) : (
-        <div className="preview-row row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
+        <div className="preview-row row row-cols-lg-4 row-cols-md-2 row-cols-sm-1 g-4">
           {listingsToDisplay}
         </div>
       )}

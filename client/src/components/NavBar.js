@@ -15,18 +15,19 @@ function NavBar({ currentUser, setCurrentUser, setSelectedListing }) {
   if (currentUser) {
     return (
       <>
-        <nav className="navbar navbar-expand-sm sticky-top bg-body-tertiary">
-          <div className="logo">
-            <img src="./lendzlogo.png" id="logo" />
-          </div>
-          <div className="container-fluid justify-content-end">
-            <span>Hi, {currentUser.username}</span>
+        <nav className="navbar top-nav navbar-expand-sm sticky-top ">
+          <img
+            src="https://github.com/khamerling-potts/lendz/blob/main/client/lendzlogo.png?raw=true"
+            id="logo"
+          />
+          <div className="user-logout container-fluid justify-content-end">
+            <span className="greeting">Hi, {currentUser.username}</span>
             <button id="logout" onClick={handleLogout}>
               Log Out
             </button>
           </div>
         </nav>
-        <nav className="navbar navbar-expand-sm sticky-top bg-body-tertiary">
+        <nav className="navbar bottom-nav navbar-expand-sm sticky-top">
           <div className="container-fluid">
             <div className="collapse navbar-collapse">
               <div className="navbar-nav">

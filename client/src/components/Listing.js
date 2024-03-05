@@ -86,7 +86,9 @@ function Listing({
       <div className="row listing-row">
         <div className="listing-col col-md-6">
           <Card.Header>
-            <Button onClick={handleGoBack}>←</Button>
+            <Button className="goback" onClick={handleGoBack}>
+              ←
+            </Button>
 
             <small>{user.username}</small>
             <span className="badge">{calculateRating(user)}</span>
@@ -99,6 +101,7 @@ function Listing({
                   overlay={editPopover}
                 >
                   <Button
+                    className="edit"
                     onClick={(e) =>
                       setShowPopover((showPopover) => !showPopover)
                     }
@@ -111,14 +114,14 @@ function Listing({
                   placement="right"
                   overlay={deletePopover}
                 >
-                  <Button>Delete</Button>
+                  <Button className="delete">Delete</Button>
                 </OverlayTrigger>
               </>
             ) : null}
           </Card.Header>
           <Card.Body>
             <Card.Title>{listing.title}</Card.Title>
-            <Card.Img src={listing.img_url} className="card-img img-fluid" />
+            <Card.Img src={listing.img_url} className="card-img" />
             <Card.Text>{listing.description}</Card.Text>
             <div className="d-flex justify-content-between">
               <Card.Subtitle>{listing.zip}</Card.Subtitle>
@@ -129,6 +132,7 @@ function Listing({
           </Card.Body>
         </div>
         <div className="claims-col col-md-6">
+          {/* <Card.Body> */}
           {rate ? (
             <RateHeader
               userToRate={userToRate}
@@ -154,6 +158,7 @@ function Listing({
               />
             ) : null}
           </ClaimsFooter>
+          {/* </Card.Body> */}
         </div>
       </div>
     </Card>
