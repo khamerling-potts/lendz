@@ -103,7 +103,7 @@ function SignupForm({ currentUser, setCurrentUser }) {
           )}
         </Form.Group>
 
-        <Button type="submit" className="submitBtn">
+        <Button type="submit" className="submit-btn">
           Sign up
         </Button>
       </Form>

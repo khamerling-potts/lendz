@@ -86,7 +86,7 @@ function LoginForm({ setCurrentUser }) {
           )}
         </Form.Group>
 
-        <Button type="submit" className="submitBtn">
+        <Button type="submit" className="submit-btn">
           Log in
         </Button>
       </Form>

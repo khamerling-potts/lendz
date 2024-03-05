@@ -76,7 +76,9 @@ function Listing({
         Are you sure you want to delete your listing?
       </Popover.Header>
       <Popover.Body>
-        <Button onClick={onDeleteListing}>Delete Listing</Button>
+        <Button onClick={onDeleteListing} className="delete-btn">
+          Delete Listing
+        </Button>
       </Popover.Body>
     </Popover>
   );
@@ -130,7 +132,7 @@ function Listing({
             <Card.Title>{listing.title}</Card.Title>
             <Card.Img src={listing.img_url} className="card-img" />
 
-            <div className="d-flex justify-content-between border-bottom">
+            <div className="listing-info-bottom d-flex justify-content-between border-bottom">
               <Card.Subtitle>{listing.zip}</Card.Subtitle>
               <Card.Subtitle className="card-subtitle">
                 Meeting place: {listing.meeting_place}

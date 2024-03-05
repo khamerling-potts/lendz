@@ -21,7 +21,9 @@ function NavBar({ currentUser, setCurrentUser, setSelectedListing }) {
             id="logo"
           />
           <div className="user-logout container-fluid justify-content-end">
-            <span className="greeting">Hi, {currentUser.username}</span>
+            <span className="greeting">
+              Hi, <span id="greeting-user">{currentUser.username}</span>
+            </span>
             <button id="logout" onClick={handleLogout}>
               Log Out
             </button>

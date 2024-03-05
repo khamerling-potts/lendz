@@ -125,7 +125,9 @@ function EditListingForm({
         ) : null}
       </Form.Group>
 
-      <Button type="submit">Save</Button>
+      <Button type="submit" className="submit-btn">
+        Save
+      </Button>
     </Form>
   );
 }
