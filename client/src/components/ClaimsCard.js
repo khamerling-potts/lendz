@@ -3,7 +3,7 @@ import Claim from "./Claim";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-function ClaimsFooter({
+function ClaimsCard({
   listing,
   setSelectedListing,
   currentUser,
@@ -49,27 +49,33 @@ function ClaimsFooter({
     },
   });
   return (
-    <Card.Header>
-      Claims
-      <ListGroup id="claims">{claims}</ListGroup>
+    // <Card className="h-100">
+    <>
+      <Card.Header>Claims</Card.Header>
+      <Card.Body>
+        <ListGroup id="claims">{claims}</ListGroup>
+      </Card.Body>
       {mine ? null : (
-        <Form onSubmit={formik.handleSubmit}>
-          <InputGroup>
-            <Form.Control
-              as="textarea"
-              placeholder="Add a claim..."
-              {...formik.getFieldProps("comment")}
-            />
-            <InputGroup.Text>
-              <Button type="submit" onSubmit={formik.handleSubmit}>
-                +Add
-              </Button>
-            </InputGroup.Text>
-          </InputGroup>
-        </Form>
+        <Card.Footer>
+          <Form onSubmit={formik.handleSubmit} className="add-claim-form">
+            <InputGroup>
+              <Form.Control
+                as="textarea"
+                placeholder="Add a claim..."
+                {...formik.getFieldProps("comment")}
+              />
+              <InputGroup.Text>
+                <Button type="submit" onSubmit={formik.handleSubmit}>
+                  +Add
+                </Button>
+              </InputGroup.Text>
+            </InputGroup>
+          </Form>
+        </Card.Footer>
       )}
-    </Card.Header>
+      {/* </Card> */}
+    </>
   );
 }
 
-export default ClaimsFooter;
+export default ClaimsCard;

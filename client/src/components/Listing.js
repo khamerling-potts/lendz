@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Popover, OverlayTrigger, Button, Card } from "react-bootstrap";
 import EditListingForm from "./EditListingForm";
-import ClaimsFooter from "./ClaimsFooter";
+import ClaimsCard from "./ClaimsCard";
 import RateHeader from "./RateHeader";
 import { useLocation, useOutletContext } from "react-router-dom";
 
@@ -82,44 +82,51 @@ function Listing({
   );
   return (
     // <div className="listing-div">
-    <Card className="h-100 listing-card">
-      <div className="row listing-row">
-        <div className="listing-col col-md-6">
-          <Card.Header>
-            <Button className="goback" onClick={handleGoBack}>
-              ←
-            </Button>
 
-            <small>{user.username}</small>
-            <span className="badge">{calculateRating(user)}</span>
+    <div className="row listing-row">
+      <div className="listing-col col-md-6">
+        <Card className="h-100 listing-card">
+          <Card.Header>
+            <span className="goback" onClick={handleGoBack}>
+              <i class="fa-solid fa-left-long"></i>
+            </span>
+
             {mine ? (
-              <>
+              <div className="edit-delete-div">
                 <OverlayTrigger
                   show={showPopover}
                   trigger="click"
                   placement="right"
                   overlay={editPopover}
                 >
-                  <Button
+                  <span
                     className="edit"
                     onClick={(e) =>
                       setShowPopover((showPopover) => !showPopover)
                     }
                   >
-                    Edit
-                  </Button>
+                    <i class="fa-regular fa-pen-to-square"></i>
+                  </span>
                 </OverlayTrigger>
                 <OverlayTrigger
                   trigger="click"
                   placement="right"
                   overlay={deletePopover}
                 >
-                  <Button className="delete">Delete</Button>
+                  <span className="delete">
+                    <i class="fa-regular fa-trash-can"></i>
+                  </span>
                 </OverlayTrigger>
-              </>
+              </div>
             ) : null}
           </Card.Header>
           <Card.Body>
+            <span className="owner">
+              <small>{user.username}</small>
+              <span className="owner-rating badge">
+                {calculateRating(user)} <i className="fa-solid fa-star"></i>
+              </span>
+            </span>
             <Card.Title>{listing.title}</Card.Title>
             <Card.Img src={listing.img_url} className="card-img" />
             <Card.Text>{listing.description}</Card.Text>
@@ -130,9 +137,11 @@ function Listing({
               </Card.Subtitle>
             </div>
           </Card.Body>
-        </div>
-        <div className="claims-col col-md-6">
-          {/* <Card.Body> */}
+        </Card>
+      </div>
+      <div className="claims-col col-md-6">
+        {/* <Card.Body> */}
+        <Card className="h-100">
           {rate ? (
             <RateHeader
               userToRate={userToRate}
@@ -141,7 +150,7 @@ function Listing({
               requestListings={requestListings}
             />
           ) : null}
-          <ClaimsFooter
+          <ClaimsCard
             listing={listing}
             setSelectedListing={setSelectedListing}
             currentUser={currentUser}
@@ -157,11 +166,12 @@ function Listing({
                 requestListings={requestListings}
               />
             ) : null}
-          </ClaimsFooter>
+          </ClaimsCard>
           {/* </Card.Body> */}
-        </div>
+        </Card>
       </div>
-    </Card>
+    </div>
+    // </Card>
     // </div>
   );
 }

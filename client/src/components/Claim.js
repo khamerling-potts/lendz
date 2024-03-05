@@ -40,13 +40,15 @@ function Claim({
       onMouseLeave={(e) => setHover(false)}
     >
       <Row>
-        <Col xs={2}>
+        <Col xs={2} className="claim-info">
           {claim.user.username}
           <br />
           {calculateRating(claim.user)}
         </Col>
-        <Col xs={6}>{claim.comment}</Col>
-        <Col xs={4}>
+        <Col xs={6} className="claim-info">
+          {claim.comment}
+        </Col>
+        <Col xs={4} className="claim-info">
           {claim.time}
           {hover && mine && !claim.selected ? (
             <Button id="select-claim>" onClick={onSelectClaim}>

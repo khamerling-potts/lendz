@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Popover, OverlayTrigger, Button, Card } from "react-bootstrap";
 import EditListingForm from "./EditListingForm";
-import ClaimsFooter from "./ClaimsFooter";
+import ClaimsCard from "./ClaimsCard";
 import RateHeader from "./RateHeader";
 import Listing from "./Listing";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";

@@ -74,17 +74,18 @@ header {
   background-color: #ffffff;
   float: right;
   height: 56px;
+  transition: 0.6s;
 }
 #logout:hover {
   background-color: #005025;
   color: #ffffff;
-  transition: 0.6s;
+  transition: 0.3s;
 }
 .preview-row .card {
   border: transparent;
   border-radius: 10px;
   width: 90%;
-  transition: 0.6s;
+  transition: 0.3s;
 }
 .preview-row .card:hover,
 .preview-row .card img:hover {
@@ -109,6 +110,12 @@ header {
   width: 90%;
   margin: auto;
 }
+.listing-col {
+  padding-right: 0;
+}
+.claims-col {
+  padding-left: 0;
+}
 .listing-col .card-body {
   display: flex;
   flex-direction: column;
@@ -125,10 +132,44 @@ header {
 .delete {
   padding-top: 0;
   padding-bottom: 0;
+  cursor: pointer;
+  font-size: 20px;
 }
-.listing-col .card-header {
+.goback:hover,
+.edit:hover,
+.delete:hover {
+  font-size: 25px;
+  transition: 0.3s;
+}
+.goback {
+  margin-left: 0;
+}
+.delete {
+  margin-left: 1rem;
+}
+.edit-delete-div {
+  margin-left: auto;
+}
+
+.owner-rating {
+  color: black;
+}
+.owner-rating .fa-star {
+  color: #fc0;
+}
+.claim-info {
+  display: flex;
+  align-items: center;
+}
+
+/* .listing-col .card-header {
   display: flex;
   justify-content: space-between;
+} */
+.card-header {
+  height: 3rem;
+  display: flex;
+  align-items: center;
 }
 
 /* Login page */
