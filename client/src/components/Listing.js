@@ -3,7 +3,6 @@ import { Popover, OverlayTrigger, Button, Card } from "react-bootstrap";
 import EditListingForm from "./EditListingForm";
 import ClaimsCard from "./ClaimsCard";
 import RateHeader from "./RateHeader";
-import { useLocation, useOutletContext } from "react-router-dom";
 
 function Listing({
   listing,
@@ -13,13 +12,6 @@ function Listing({
   handleDeleteListing,
   requestListings,
 }) {
-  // const {
-  //   currentUser,
-  //   handleEditListing,
-  //   handleDeleteListing,
-  //   requestListings,
-  // } = useOutletContext();
-  //const [listing, setListing] = useState(useLocation().state.listing);
   const [showPopover, setShowPopover] = useState(false);
 
   let selectedClaim = listing.claims.find((claim) => claim.selected);
@@ -29,7 +21,7 @@ function Listing({
   const mine = user.username === currentUser.username;
   /* Bool - Only give the option to rate if you're the listing poster or claimer */
   const rate = selectedClaim
-    ? mine || selectedClaim.user.username == currentUser.username
+    ? mine || selectedClaim.user.username === currentUser.username
     : false;
   /* Assigns who to rate based on your user role */
   const userToRate = rate ? (mine ? selectedClaim.user : user) : null;
@@ -83,8 +75,6 @@ function Listing({
     </Popover>
   );
   return (
-    // <div className="listing-div">
-
     <div className="row listing-row">
       <div className="listing-col col-md-6">
         <Card className="h-100 listing-card">
@@ -143,7 +133,6 @@ function Listing({
         </Card>
       </div>
       <div className="claims-col col-md-6">
-        {/* <Card.Body> */}
         <Card className="h-100 claims-card">
           {rate ? (
             <RateHeader
@@ -170,12 +159,9 @@ function Listing({
               />
             ) : null}
           </ClaimsCard>
-          {/* </Card.Body> */}
         </Card>
       </div>
     </div>
-    // </Card>
-    // </div>
   );
 }
 

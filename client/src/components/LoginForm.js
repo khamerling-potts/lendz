@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -94,39 +93,3 @@ function LoginForm({ setCurrentUser }) {
   );
 }
 export default LoginForm;
-
-{
-  /* <div>
-      <label htmlFor="loginForm" id="loginLabel">
-        Already have an account? Log In:
-      </label>
-      {valid ? (
-        <></>
-      ) : (
-        <label htmlFor="loginForm" id="invalidLogin">
-          Invalid username or password
-        </label>
-      )}
-      <form onSubmit={formik.handleSubmit} id="loginForm">
-        <input
-          type="text"
-          id="username"
-          placeholder="username"
-          {...formik.getFieldProps("username")}
-        ></input>
-        {formik.touched.username && formik.errors.username ? (
-          <div>{formik.errors.username}</div>
-        ) : null}
-        <input
-          type="text"
-          id="password"
-          placeholder="password"
-          {...formik.getFieldProps("password")}
-        ></input>
-        {formik.touched.password && formik.errors.password ? (
-          <div>{formik.errors.password}</div>
-        ) : null}
-        <button type="submit">Log in</button>
-      </form>
-    </div> */
-}

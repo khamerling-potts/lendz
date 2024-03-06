@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import Listing from "../components/Listing";
 import CreateListingForm from "../components/CreateListingForm";
@@ -6,11 +5,8 @@ import { Button } from "react-bootstrap";
 import ListingPreview from "../components/ListingPreview";
 
 function YourListings() {
-  //const [yourListings, setYourListings] = useState([]);
-
   const {
     currentUser,
-    //updateListings,
     listings,
     selectedListing,
     setSelectedListing,
@@ -22,20 +18,6 @@ function YourListings() {
   const yourListings = listings.filter(
     (listing) => listing.user_id === currentUser.id
   );
-
-  // useEffect(() => {
-  //   setYourListings(currentUser.owned_listings.sort((a, b) => a.id - b.id));
-  // }, []);
-
-  // function handleEditListing(listing) {
-  //   const updatedListings = updateListings(yourListings, "edit", listing);
-  //   setYourListings(updatedListings);
-  // }
-
-  // function handleDeleteListing(id) {
-  //   const updatedListings = updateListings(yourListings, "delete", null, id);
-  //   setYourListings(updatedListings);
-  // }
 
   const listingsToDisplay = yourListings.map((listing) => (
     <ListingPreview
@@ -50,7 +32,6 @@ function YourListings() {
   ));
 
   return (
-    // <div className="page">
     <div className="page">
       <Button
         className="create-listing-btn"
@@ -92,7 +73,6 @@ function YourListings() {
         </div>
       )}
     </div>
-    // </div>
   );
 }
 

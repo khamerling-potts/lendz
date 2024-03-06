@@ -269,7 +269,7 @@ class ClaimByID(Resource):
 
 @app.route("/")
 @app.route("/<int:id>")
-def index():
+def index(id=0):
     return "<h1>Project Server</h1>"
 
 

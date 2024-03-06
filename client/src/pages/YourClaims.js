@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Listing from "../components/Listing";
 import ListingPreview from "../components/ListingPreview";
@@ -22,15 +21,12 @@ function YourClaims() {
       listing={listing}
       setSelectedListing={setSelectedListing}
       currentUser={currentUser}
-      // handleEditListing={handleEditListing}
-      // handleDeleteListing={handleDeleteListing}
       requestListings={requestListings}
     />
   ));
 
   return (
     <div className="page">
-      {/* <div className="container "> */}
       <h1>Your Claimed Listings</h1>
 
       {selectedListing ? (
@@ -39,7 +35,6 @@ function YourClaims() {
           setSelectedListing={setSelectedListing}
           currentUser={currentUser}
           handleEditListing={handleEditListing}
-          // handleDeleteListing={handleDeleteListing}
           requestListings={requestListings}
         />
       ) : listingsToDisplay.length ? (
@@ -52,7 +47,6 @@ function YourClaims() {
           Home feed!
         </div>
       )}
-      {/* </div> */}
     </div>
   );
 }

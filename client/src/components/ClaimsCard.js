@@ -6,7 +6,6 @@ import * as Yup from "yup";
 function ClaimsCard({
   listing,
   setSelectedListing,
-  currentUser,
   mine,
   handleEditListing,
   calculateRating,
@@ -49,7 +48,6 @@ function ClaimsCard({
     },
   });
   return (
-    // <Card className="h-100">
     <>
       <Card.Header>Claims</Card.Header>
       <Card.Body>
@@ -77,7 +75,6 @@ function ClaimsCard({
           </Form>
         </Card.Footer>
       )}
-      {/* </Card> */}
     </>
   );
 }

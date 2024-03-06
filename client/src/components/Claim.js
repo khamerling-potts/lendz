@@ -2,16 +2,13 @@ import { useState } from "react";
 import { ListGroup, Row, Col, Button } from "react-bootstrap";
 
 function Claim({
-  listing,
   setSelectedListing,
   claim,
   mine,
   handleEditListing,
   calculateRating,
-  setSelectedlisting,
 }) {
   const [hover, setHover] = useState(false);
-  const ratings = claim.user.ratings;
 
   function onSelectClaim(e) {
     const configObj = {

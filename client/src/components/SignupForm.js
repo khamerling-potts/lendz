@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
-import { useFetcher, useOutletContext } from "react-router-dom";
+import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Form, Button } from "react-bootstrap";
 
-function SignupForm({ currentUser, setCurrentUser }) {
+function SignupForm({ setCurrentUser }) {
   const [usernameTaken, setUsernameTaken] = useState(false);
 
   function handleChange(e) {
@@ -76,10 +75,10 @@ function SignupForm({ currentUser, setCurrentUser }) {
               {formik.errors.username}
             </Form.Text>
           ) : null}
-          {usernameTaken && formik.values.username != "" ? (
+          {usernameTaken && formik.values.username !== "" ? (
             <Form.Text id="usernameTaken">Username taken ✕</Form.Text>
           ) : null}
-          {!usernameTaken && formik.values.username != "" ? (
+          {!usernameTaken && formik.values.username !== "" ? (
             <Form.Text id="usernameAvailable">Username available ✔</Form.Text>
           ) : (
             <br />

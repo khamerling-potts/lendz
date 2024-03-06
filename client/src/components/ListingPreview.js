@@ -1,22 +1,6 @@
-import { useState } from "react";
-import { Popover, OverlayTrigger, Button, Card } from "react-bootstrap";
-import EditListingForm from "./EditListingForm";
-import ClaimsCard from "./ClaimsCard";
-import RateHeader from "./RateHeader";
-import Listing from "./Listing";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { Card } from "react-bootstrap";
 
-function ListingPreview({
-  listing,
-  setSelectedListing,
-  //   currentUser,
-  //   handleEditListing,
-  //   handleDeleteListing,
-  //   requestListings,
-}) {
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-
+function ListingPreview({ listing, setSelectedListing }) {
   return (
     <div className="col">
       <Card
