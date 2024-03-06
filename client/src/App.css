@@ -36,6 +36,7 @@ header {
 .create-listing-btn:hover,
 .post-listing-btn:hover {
   background-color: #8076a3;
+  transition: 0.3s;
 }
 .preview-row {
   display: flex;
@@ -54,6 +55,7 @@ header {
 }
 .top-nav {
   padding-bottom: 0;
+  backdrop-filter: blur(10px);
 }
 .bottom-nav {
   padding-top: 0;
@@ -217,6 +219,7 @@ header {
 }
 .delete-btn:hover {
   background-color: #005025;
+  transition: 0.3s;
 }
 .card-title {
   text-align: center;
@@ -240,8 +243,9 @@ header {
 }
 .claim-info {
   display: flex;
-  /* align-items: center; */
-  justify-content: center;
+}
+.claim-info.col-4 {
+  justify-content: end;
 }
 #claims .selected {
   border: 2px solid #005025;
@@ -257,11 +261,18 @@ header {
   height: 100%;
   border: none;
 }
-.select-claim-btn,
-.select-claim-btn:hover {
+.add-claim-btn:hover {
+  background-color: #005025;
+  transition: 0.3s;
+}
+.select-claim-btn {
   background-color: #759501;
   height: 100%;
   border: none;
+}
+.select-claim-btn:hover {
+  background-color: #759501;
+  transition: 0.3s;
 }
 
 /* Login page */
@@ -307,6 +318,7 @@ header {
 
 .submit-btn:hover {
   background-color: #005025;
+  transition: 0.3s;
 }
 #invalidLogin {
   color: rgb(152, 19, 19);

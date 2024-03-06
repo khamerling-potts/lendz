@@ -9,14 +9,14 @@ from flask_restful import Resource
 # Local imports
 from config import app, db, api
 
-# Add your model imports
+# Model imports
 from models import User, Listing, Claim
 
 
 ### RESOURCES ###
 
 
-# ONLY used to clear the database in development. Consider commenting out for production
+# ONLY used to clear the database in development
 # Uncomment the model that you want to clear
 class ResetDB(Resource):
     def get(self):
@@ -24,7 +24,7 @@ class ResetDB(Resource):
         # Listing.query.delete()
         Claim.query.delete()
         db.session.commit()
-        return {"message": "200 - Successfully cleared User database"}, 200
+        return {"message": "200 - Successfully cleared database"}, 200
 
 
 # Authorizing requests
@@ -38,11 +38,16 @@ def check_logged_in():
         "check_session",
     ]:
         print("checking logged in")
-        if not session["user_id"]:
+        if not session.get("user_id"):
             return {"error": "Unauthorized"}, 401
 
 
+# Users Resource that gets all users or creates a new user
 class Users(Resource):
+    def get(self):
+        users = [user.to_dict() for user in User.query.all()]
+        return users, 200
+
     def post(self):
         data = request.get_json()
         [username, password] = [data.get("username"), data.get("password")]
@@ -58,6 +63,8 @@ class Users(Resource):
             return {"error": "422 - Unprocessable Entity"}, 422
 
 
+# UserByID Resource that updates a given user.
+# Currently only applicable when rating a user, but may be used to update a user's account.
 class UserByID(Resource):
     def patch(self, id):
         data = request.get_json()
@@ -81,6 +88,7 @@ class UserByID(Resource):
             return {"error": "422 - Unprocessable Entity"}, 422
 
 
+# Checks if logged in when app loads
 class CheckSession(Resource):
     def get(self):
         if request.endpoint != "reset" and request.endpoint != "user":
@@ -92,6 +100,7 @@ class CheckSession(Resource):
                 return {}, 401
 
 
+# Sets session user id when logging in and returns current user
 class Login(Resource):
     def post(self):
         data = request.get_json()
@@ -103,12 +112,14 @@ class Login(Resource):
         return {"error": "401 - Unauthorized"}, 401
 
 
+# Deletes session user id when logging out
 class Logout(Resource):
     def delete(self):
         session["user_id"] = None
         return {}, 204
 
 
+# Checks whether username is taken when signing up
 class CheckUsername(Resource):
     def post(self):
         data = request.get_json()
@@ -119,6 +130,7 @@ class CheckUsername(Resource):
         return {}, 200
 
 
+# Users Resource that gets all users or creates a new user
 class Listings(Resource):
     def get(self):
         listings = [listing.to_dict() for listing in Listing.query.all()]
@@ -126,8 +138,6 @@ class Listings(Resource):
 
     def post(self):
         data = request.get_json()
-        # use setattr?
-        # use a conditional and only set if it has value (create helper function for this)
 
         [title, img_url, description, zip, meeting_place] = [
             data.get("title"),
@@ -137,8 +147,7 @@ class Listings(Resource):
             data.get("meeting_place"),
         ]
         user_id = session.get("user_id")
-        # print(user_id)
-        # user = User.query.filter_by(id=user_id).first()
+
         try:
             listing = Listing(
                 title=title,
@@ -160,6 +169,7 @@ class Listings(Resource):
             }, 422
 
 
+# ListingByID Resource that updates or deletes a listing
 class ListingByID(Resource):
     def patch(self, id):
         listing = Listing.query.filter_by(id=id).first()
@@ -193,8 +203,13 @@ class ListingByID(Resource):
         return {"message": "listing successfully deleted"}, 204
 
 
-# Returns the listing updated with its new claim. This simplifies updating state on the front end
+# Claims Resource that gets all claims or creates a claim
 class Claims(Resource):
+    def get(self):
+        claims = [claim.to_dict() for claim in Claim.query.all()]
+        return claims, 200
+
+    # Returns the listing updated with its new claim. This simplifies updating state on the front end.
     def post(self):
         data = request.get_json()
         [comment, listing_id] = [
@@ -202,7 +217,6 @@ class Claims(Resource):
             data.get("listing_id"),
         ]
         user_id = session.get("user_id")
-        # listing = Listing.query.filter_by(id=listing_id).first()
 
         if listing_id:
             try:
@@ -223,8 +237,10 @@ class Claims(Resource):
             return {"error": "404 - Listing Not Found"}, 404
 
 
-# also returns updated listing
+# ClaimByID Resource that updates a claim
+# Currently only used when selecting a claim, but may be used in the future for editing them
 class ClaimByID(Resource):
+    # Returns updated listing with newly selected claim
     def patch(self, id):
         user_id = session.get("user_id")
 
@@ -251,18 +267,6 @@ class ClaimByID(Resource):
             return {"error": "422 - Unprocessable Entity"}, 422
 
 
-# don't think I need this bc I can filter through all listings on the front end
-# class YourListings(Resource):
-#     # id refers to user id so you can browse your owned listings
-#     def get(self):
-#         user_id = session.get("user_id")
-#         if user_id:
-#             user = User.query.filter_by(id=user_id).first()
-#             owned_listings = [listing.to_dict() for listing in user.owned_listings]
-#             return owned_listings, 200
-#         return {"error": "401 - Unauthorized"}, 401
-
-
 @app.route("/")
 @app.route("/<int:id>")
 def index():
@@ -280,7 +284,6 @@ api.add_resource(Listings, "/listings", endpoint="listings")
 api.add_resource(ListingByID, "/listings/<int:id>", endpoint="listing")
 api.add_resource(Claims, "/claims", endpoint="claims")
 api.add_resource(ClaimByID, "/claims/<int:id>", endpoint="claim")
-# api.add_resource(YourListings, "/your_listings", endpoint="your_listings")
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
