@@ -6,8 +6,6 @@ from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import validates
 
-# import datetime, functools
-
 
 from config import db, bcrypt
 
@@ -24,7 +22,6 @@ class User(db.Model, SerializerMixin):
         "-claimed_listings.user",
         "-claimed_listings.claimed_users",
     )
-    # serialize_rules = ("-owned_listings", "-claims", "-claimed_listings")
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
@@ -83,7 +80,6 @@ class Listing(db.Model, SerializerMixin):
         "-claimed_users.owned_listings",
         "-claims.listing",
     )
-    # serialize_rules = "-user, claims, claimed_users"
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
@@ -148,7 +144,6 @@ class Listing(db.Model, SerializerMixin):
 class Claim(db.Model, SerializerMixin):
     __tablename__ = "claims"
 
-    # serialize_rules = ("-user.claims", "-listing.claims", "-listing", "-user")
     serialize_rules = (
         "-user.owned_listings",
         "-user.claims",
@@ -157,11 +152,6 @@ class Claim(db.Model, SerializerMixin):
         "-listing.claimed_users",
         "-listing.user",
     )
-    # serialize_only = ("id", "comment", "time", "selected")
-
-    # try this if times are wrong
-    # def default_time():
-    #     return datetime.datetime.now()
 
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.String, nullable=False)

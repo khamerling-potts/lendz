@@ -36,6 +36,7 @@ def check_logged_in():
         "reset",
         "check_username",
         "check_session",
+        "practice",
     ]:
         print("checking logged in")
         if not session.get("user_id"):
@@ -285,5 +286,57 @@ api.add_resource(ListingByID, "/listings/<int:id>", endpoint="listing")
 api.add_resource(Claims, "/claims", endpoint="claims")
 api.add_resource(ClaimByID, "/claims/<int:id>", endpoint="claim")
 
+
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
+
+
+### EXAM PRACTICE ###
+# class UsersByName(Resource):
+#     def get(self, name):
+#         users = [
+#             user.to_dict(rules=("-owned_listings", "-ratings"))
+#             for user in User.query.filter(User.username.contains(name))
+#         ]
+#         users.sort(key=lambda user: user["username"], reverse=True)
+#         return users, 200
+
+
+# class ListingsByLength(Resource):
+#     def get(self):
+#         listings = [
+#             listing.to_dict(rules=("-user", "-claims"))
+#             for listing in Listing.query.all()
+#         ]
+#         listings.sort(key=lambda listing: len(listing["description"]), reverse=True)
+#         return listings, 200
+
+
+# class ClaimsByListingZip(Resource):
+#     def get(self):
+#         claims = [
+#             claim.to_dict() for claim in Claim.query.all() if claim.listing.zip == 20008
+#         ]
+#         #  OR
+#         # filtered_claims = [
+#         #     claim for claim in claims if claim["listing"]["zip"] == 20008
+#         # ]
+#         return claims, 200
+
+
+# class UsersWith3Stars(Resource):
+#     def get(self):
+#         users = [
+#             user.to_dict(rules=("-claims", "-owned_listings"))
+#             for user in User.query.all()
+#             if user.ratings and 3 in user.ratings
+#         ]
+#         return users, 200
+
+
+# api.add_resource(UsersByName, "/users/<name>")
+# api.add_resource(ListingsByLength, "/listings_by_length")
+# api.add_resource(ClaimsByListingZip, "/claims_by_listing_zip")
+# api.add_resource(UsersWith3Stars, "/users_with_3_stars")
+
+### ###
