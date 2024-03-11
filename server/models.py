@@ -45,7 +45,6 @@ class User(db.Model, SerializerMixin):
         creator=lambda listing_obj: Claim(claimed_listing=listing_obj),
     )
 
-    # what is this?
     @hybrid_property
     def password_hash(self):
         raise AttributeError("Password hashes may not be viewed")

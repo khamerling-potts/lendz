@@ -291,6 +291,19 @@ if __name__ == "__main__":
     app.run(port=5555, debug=True)
 
 
+### EXAM ###
+# class ListingsByZip(Resource):
+#     def get(self, zip):
+#         listings = [
+#             listing.to_dict(rules=("-claims", "-user"))
+#             for listing in Listing.query.filter_by(zip=zip)
+#         ]
+#         return listings, 200
+
+# api.add_resource(ListingsByZip, "/listings_by_zip/<int:zip>", endpoint="practice")
+###
+
+
 ### EXAM PRACTICE ###
 # class UsersByName(Resource):
 #     def get(self, name):
